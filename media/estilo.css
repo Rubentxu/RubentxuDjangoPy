@@ -1638,7 +1638,7 @@ a img
 .article th, .article td
 {
   padding: 2px;
-  border: solid 1px #8C9B94;
+  
   vertical-align: top;
   text-align: left;
 }
@@ -1993,3 +1993,67 @@ background-repeat: no-repeat;
 background-attachment: scroll;
 background-position: left center;
 }
+
+#comment_box { /* div contenedor de comentarios */
+   margin:0 auto;
+   margin-top:10px;
+   padding:0;
+   width: 540px;
+   text-align:center;
+   height:auto; /* se adapta a la altura de los elementos contenidos */
+}
+#comment_box .autor {
+   color: #581900;
+   float: left;
+   margin: 1.5em;
+   font-size: medium;
+}
+
+#comment_box .contenido {
+   border:solid 2px #455b80;
+   padding: 5px 10px 10px 10px;
+   width: 520px;
+   height: auto;
+   float:left;
+   margin-bottom:5px;
+   margin-top:5px;
+   text-align:justify;
+   text-indent: 1.5em; /* sangria */
+   font-size:12px;
+   background-color: #edf3ff;
+   color: #010;
+   -moz-box-shadow: 10px 13px 7px #000000;
+   -webkit-box-shadow: 10px 13px 7px #000000;
+   box-shadow: 10px 13px 7px #000000;
+}
+
+#comment_area
+{
+   margin:0 auto;
+   margin-top: 15px; 
+   padding:1em;
+   text-align:center;
+   height:auto;
+   width:518px;
+   padding:17px 20px 17px 20px;
+   clear: left; /* fuerza a mostrarse debajo de cualquier caja flotante */
+
+   opacity:.70; /*CSS3*/
+   -moz-opacity:.70; /*Mozilla*/
+   filter: alpha(opacity=80);/*IE*/
+   
+   border:double 4px #4356d1;
+   -moz-border-radius-topleft: 0px;
+   -moz-border-radius-topright:75px;
+   -moz-border-radius-bottomleft:44px;
+   -moz-border-radius-bottomright:0px;
+   -webkit-border-top-left-radius:0px;
+   -webkit-border-top-right-radius:75px;
+   -webkit-border-bottom-left-radius:44px;
+   -webkit-border-bottom-right-radius:0px;
+   border-top-left-radius:0px;
+   border-top-right-radius:75px;
+   border-bottom-left-radius:44px;
+   border-bottom-right-radius:0px;
+}
+

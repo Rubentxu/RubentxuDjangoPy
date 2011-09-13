@@ -17,6 +17,7 @@ urlpatterns = patterns('',
         {'next_page': '/blog/',}),    
     (r'^admin/', include(admin.site.urls)),
     (r'^markdown/preview/$', 'blog.views.mark'),
-       
+    (r'^comments/', include('django.contrib.comments.urls')),
+   
     
 )

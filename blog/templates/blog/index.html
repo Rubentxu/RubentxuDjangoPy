@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 {% block content %} 
-  
+  {% load comments %}
   {% for post in Posts %}
-  	
+  	{% get_comment_count for post as comment_count %}
   	<h2 class="postheader">{{ post.titulo|safe }}</h2>
-  	<p class="chronodata">Publicado: {{ post.creado|date:"F j, Y" }} <span>Categoria: {{ post.categoria.nombre }}  </span></p>
-  	  
+  	<p class="chronodata">Publicado: {{ post.creado|date:"F j, Y" }} ||
+  	<span>Categoria: {{ post.categoria.nombre }} || <b>  {{ comment_count }} comentarios.</b></span></p>
+  	
+
+	
     <p>{{ post.autor.username }} escribio:</p>   
     <div class="postcontent"><p>{{ post.contenido_html|safe }}</p>
     
     	<p>
     	<span class="button-wrapper"> <span class="l">
     	</span> <span class="r"> </span> <a class="button"
-		href="javascript:void(0)">Leer Mas...</a> </span>
+		href="/blog/post/verpost/{{ post.id }}/">Comentarios..</a> </span>
 		</p>
 		<div class="cleared"></div>
 		

@@ -1,0 +1,39 @@
+{% extends "blog/post/base_post.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Preview your comment" %}{% endblock %}
+
+{% block content %}
+  {% load comments %}
+  <div id="comment_area">
+
+  <table>
+  <form action="{% comment_form_target %}" method="post">
+  {% if form.errors %}
+    <h1>{% blocktrans count form.errors|length as counter %}Please correct the error below{% plural %}Please correct the errors below{% endblocktrans %}</h1>
+    {% else %}
+    <h1>{% trans "Preview your comment" %}</h1>
+   {% endif %}  
+    {% csrf_token %}
+    {{ form }}
+    <tr>
+      <td colspan="2">
+        <input type="submit" name="submit" class="submit-post" value="{% trans "Post" %}">
+        <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}">
+        {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+        
+      </td>
+    </tr>
+  </form>
+</table>
+  </div> 
+  <div id="comment_box">    
+    
+        <div class='autor'>Tu dices:</div>
+    	<div class="contenido ">
+        {{ comment|linebreaks }}             
+    </a>
+        </div>        
+    
+	</div>
+{% endblock %}

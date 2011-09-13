@@ -1,11 +1,61 @@
 {% extends 'blog/post/base_post.html' %} 
 {% block content %}
+	{% load comments %}
+	{% load markup %}
+	
+	
 	<h3>{{ Post.nombre }}</h3>
 	<p>Autor: {{Post.autor.username }}
 	<h3>Titulo: {{Post.titulo}}</h3>
 	<div>
 		{{ Post.contenido_html|safe }} 
-	</div>		
+	</div>
+	
+	
+	
+    <h2>Deja un Comentario</h2>
+    {% get_comment_form for Post as form %}
+    <div id="comment_area">
+<table>
+  <form action="{% comment_form_target %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <tr>
+      <td colspan="2">
+        <input type="submit" name="submit" value="Enviar">
+        <input type="submit" name="preview" value="Preview">
+        {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+        
+      </td>
+    </tr>
+  </form>
+</table>
+</div>
+    
+    {% get_comment_count for Post as comment_count %}
+
+	<h4>Este post tiene {{ comment_count }} comentarios.</h4>
+    
+	{% get_comment_list for Post as comment_list %}
+    <div id="comment_box">
+    
+    {% for comment in comment_list %}
+    
+    
+    
+        <div class='autor'>En {{ comment.submit_date|date:"F j, Y" }}: {{ comment.name }} dijo:</div>
+    	<div class="contenido ">
+        {{ comment.comment|markdown:"safe"}}
+         <a href="{% get_comment_permalink comment %}">
+        permalink para comentario #{{ forloop.counter }}
+    </a>
+
+        </div>
+        
+    {% endfor %}
+	</div>
+	
+			
 {% endblock %} 
 		 
 {%block contBarraLat%} 

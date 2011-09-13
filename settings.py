@@ -5,6 +5,12 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 TIME_ZONE = 'Europe/Madrid'
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 LANGUAGE_CODE= 'es'
+SITE_ID = 1
+
+GAE_SETTINGS_MODULES = (
+    'gae_comments_settings',
+)
+
 
 INSTALLED_APPS = (
     'djangoappengine',

@@ -31,3 +31,21 @@ indexes:
   - name: estado
   - name: creado
     direction: desc
+
+- kind: django_comments
+  properties:
+  - name: content_type_id
+  - name: is_public
+  - name: is_removed
+  - name: object_pk
+  - name: site_id
+  - name: submit_date
+
+- kind: django_comments
+  properties:
+  - name: content_type_id
+  - name: object_pk
+  - name: user_email
+  - name: user_name
+  - name: user_url
+  - name: submit_date

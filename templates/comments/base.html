@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="es-ES"
+	xml:lang="es">
+<head>
+<meta name="google-site-verification"
+	content="9roxQCpEGIYvIycCn3b0YkAI-yBSJppa17Q9b2o0x6g" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block title %}Blog Rubentxu--- {% endblock %}</title>
+{% block jquerys %}<!-- CODIGO EXTRA -->{% endblock %}
+<link rel="stylesheet" href="/media/estilo.css" type="text/css"
+	media="screen" />
+
+<!--[if IE 6]><link rel="stylesheet" href="../media/estilo.ie6.css" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="../media/estilo.ie7.css" type="text/css" media="screen" /><![endif]-->
+</head>
+<body>
+	<div id="page-background-simple-gradient">
+		<div id="page-background-gradient"></div>
+	</div>
+	<div id="page-background-glare">
+		<div id="page-background-glare-image"></div>
+	</div>
+	<div id="main">
+		<div class="sheet">
+			<div class="sheet-tl"></div>
+			<div class="sheet-tr"></div>
+			<div class="sheet-bl"></div>
+			<div class="sheet-br"></div>
+			<div class="sheet-tc"></div>
+			<div class="sheet-bc"></div>
+			<div class="sheet-cl"></div>
+			<div class="sheet-cr"></div>
+			<div class="sheet-cc"></div>
+			<div class="sheet-body">
+				<div class="header">
+					<div class="header-png"></div>
+					<div class="header-jpeg"></div>
+					<div class="logo">
+						<h1 id="name-text" class="logo-name">
+							<a href="#">Blog</a>
+						</h1>
+						<div id="slogan-text" class="logo-text">Rubentxu</div>
+					</div>
+				</div>
+				<div class="nav">
+					<ul class="menu">						
+						{%block menu%}
+						<li><a href="/" class="active"><span class="l"></span><span
+								class="r"></span><span class="t"> Inicio</span> </a>
+						</li>
+						<li><a href="/post/tutos/listatutos" class="active"><span class="l"></span>
+						<span class="r"></span><span class="t">Tutoriales</span></a>
+						</li>
+						</li>
+						<li><a href="/chuletas" class="active"><span class="l"></span>
+						<span class="r"></span><span class="t">Chuletas</span></a>
+						</li>
+						<li><a href="/acercade" class="active"><span class="l"></span>
+						<span class="r"></span><span class="t">Acerca de..</span></a>
+						</li>
+						</li>						
+						 {%endblock%} 
+						{% if user.is_authenticated %}
+						<li class="estado">
+						<a href="{% url django.contrib.auth.views.logout %}" class="active"> 
+						<span class="l"></span><span class="r"></span><span class="t">Hola, {{ user.username }} :Salir</span>
+						</a>
+						</li> {% else %}
+						<li class="estado"> 
+						<a href="{% url blog.views.lista_Posts %}"><span
+								class="l"></span><span class="r"></span><span class="t">Entrar
+									Sistema</span></a>
+						</li> {% endif %}
+					</ul>
+				</div>
+				<div class="content-layout">
+					<div class="content-layout-row">
+						<div class="layout-cell content">
+														
+							<div class="post">
+								<div class="post-tl"></div>
+								<div class="post-tr"></div>
+								<div class="post-bl"></div>
+								<div class="post-br"></div>
+								<div class="post-tc"></div>
+								<div class="post-bc"></div>
+								<div class="post-cl"></div>
+								<div class="post-cr"></div>
+								<div class="post-cc"></div>
+								<div class="post-body">
+									<div class="post-inner article">
+										{% block content %} 
+										<h2 class="postheader">{% block contentitulo %}Welcome{% endblock %}</h2>
+										<div class="postcontent">
+											<!-- article-content -->
+											
+
+											<p>
+												Lorem ipsum dolor sit amet, <a href="#" title="link">link</a>,
+												<a class="visited" href="#" title="visited link">visited
+													link</a>, <a class="hover" href="#" title="hovered link">hovered
+													link</a> consectetuer adipiscing elit. Quisque sed felis.
+												Aliquam sit amet felis. Mauris semper, velit semper laoreet
+												dictum, quam diam dictum urna, nec placerat elit nisl in
+												quam. Etiam augue pede, molestie eget, rhoncus at, convallis
+												ut, eros.
+											</p>
+											<p>
+												<span class="button-wrapper"> <span class="l">
+												</span> <span class="r"> </span> <a class="button"
+													href="javascript:void(0)">Read more...</a> </span>
+											</p>
+											<div class="cleared"></div>
+											<div class="content-layout overview-table">
+												<div class="content-layout-row">
+													<div class="layout-cell">
+														<div class="overview-table-inner">
+															<h4>Support</h4>
+															<img src="images/01.png" width="55px" height="55px"
+																alt="an image" class="image" />
+															<p>Lorem ipsum dolor sit amet, consectetuer
+																adipiscing elit. Quisque sed felis. Aliquam sit amet
+																felis. Mauris semper, velit semper laoreet dictum, quam
+																diam dictum urna.</p>
+														</div>
+													</div>
+													<!-- end cell -->
+													<div class="layout-cell">
+														<div class="overview-table-inner">
+															<h4>Development</h4>
+															<img src="images/02.png" width="55px" height="55px"
+																alt="an image" class="image" />
+															<p>Lorem ipsum dolor sit amet, consectetuer
+																adipiscing elit. Quisque sed felis. Aliquam sit amet
+																felis. Mauris semper, velit semper laoreet dictum, quam
+																diam dictum urna.</p>
+														</div>
+													</div>
+													<!-- end cell -->
+													<div class="layout-cell">
+														<div class="overview-table-inner">
+															<h4>Strategy</h4>
+
+															<img src="images/03.png" width="55px" height="55px"
+																alt="an image" class="image" />
+															<p>Lorem ipsum dolor sit amet, consectetuer
+																adipiscing elit. Quisque sed felis. Aliquam sit amet
+																felis. Mauris semper, velit semper laoreet dictum, quam
+																diam dictum urna.</p>
+														</div>
+													</div>
+													<!-- end cell -->
+												</div>
+												<!-- end row -->
+											</div>
+											<!-- end table -->
+											
+											<!-- /article-content -->
+										</div>
+										{% endblock %}
+										<div class="cleared"></div>
+									</div>
+
+									<div class="cleared"></div>
+								</div>
+							</div>
+							
+							
+						</div>
+						<div class="layout-cell sidebar1">
+
+							<div class="block">
+								<div class="block-body">
+									<div class="blockheader">
+										<div class="l"></div>
+										<div class="r"></div>
+										<div class="t">{%block titBarraLat%}Posts{%endblock%}</div>
+									</div>
+									<div class="blockcontent">
+										<div class="blockcontent-tl"></div>
+										<div class="blockcontent-tr"></div>
+										<div class="blockcontent-bl"></div>
+										<div class="blockcontent-br"></div>
+										<div class="blockcontent-tc"></div>
+										<div class="blockcontent-bc"></div>
+										<div class="blockcontent-cl"></div>
+										<div class="blockcontent-cr"></div>
+										<div class="blockcontent-cc"></div>
+										<div class="blockcontent-body">
+											<!-- block-content -->
+											{%block contBarraLat%} {%endblock %}
+											<!-- /block-content -->
+
+											<div class="cleared"></div>
+										</div>
+									</div>
+									<div class="cleared"></div>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+				<div class="cleared"></div>
+				<div class="footer">
+					<div class="footer-t"></div>
+					<div class="footer-l"></div>
+					<div class="footer-b"></div>
+					<div class="footer-r"></div>
+					<div class="footer-body">
+						<a href="#" class="rss-tag-icon" title="RSS"></a>
+						<div class="footer-text">
+							<p>
+								<a href="#">Contacto</a> | | <a href="#">Creado por Rubentxu</a><br />
+								Copyright &#169; 2011 ---. Todos los derechos reservados.
+							</p>
+						</div>
+						<div class="cleared"></div>
+					</div>
+				</div>
+				<div class="cleared"></div>
+			</div>
+		</div>
+		<div class="cleared"></div>
+		<p class="page-footer">Blog-Rubentxu creado por Rubentxu.</p>
+	</div>
+
+</body>
+</html>
