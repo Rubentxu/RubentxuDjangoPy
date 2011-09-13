@@ -60,9 +60,9 @@
 		 
 {%block contBarraLat%} 
 		{% if user.is_authenticated %}
-	<p><a href="/blog/post/crearpost/">Crear Post</a></p>
-	<p><a href="/blog/post/modifpost/{{ Post.id }}">Modificar Post</a></p>
-	<p><a href="/blog/post/borrarpost/{{ Post.id }}">Borrar Post</a></p>
-	<p><a href="/blog/post/listpost/">Listar Posts</a></p>
+	<p><a href="{% url blog.views.crear_Post %}">Crear Post</a></p>
+	<p><a href="{% url blog.views.modificar_Post Post.id %}">Modificar Post</a></p>
+	<p><a href="{% url blog.views.borrar_Post  Post.id %}">Borrar Post</a></p>
+	<p><a href="{% url blog.views.lista_Posts %}">Listar Posts</a></p>
 		{%endif%} 
 {%endblock%}

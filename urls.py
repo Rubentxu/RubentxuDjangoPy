@@ -1,9 +1,16 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import admin
+from blog.feeds import LatestEntriesFeed,CategoryFeed
 
 admin.autodiscover()
 handler500 = 'djangotoolbox.errorviews.server_error'
+
+feeds = {
+    'ultimos': LatestEntriesFeed,
+    'categorias': CategoryFeed,
+}
+
 
 urlpatterns = patterns('',
     (r'^$', 'django.views.generic.simple.redirect_to', {'url': '/blog/', }),
@@ -18,6 +25,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     (r'^markdown/preview/$', 'blog.views.mark'),
     (r'^comments/', include('django.contrib.comments.urls')),
-   
+    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
+
     
 )

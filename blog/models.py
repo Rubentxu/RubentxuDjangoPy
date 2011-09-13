@@ -38,12 +38,10 @@ class Post(models.Model):
     
     autor = models.ForeignKey(User)
     titulo= models.CharField(max_length=50,unique=True)
-    contenido = models.TextField()
-    resumen= models.TextField(blank=True)
+    contenido = models.TextField()    
     creado = models.DateTimeField(auto_now_add=True)
     modificado= models.DateTimeField(auto_now_add=True)
-    contenido_html= models.TextField(editable=False,blank=True)  
-    resumen_html= models.TextField(editable=False,blank=True)
+    contenido_html= models.TextField(editable=False,blank=True)     
     activa_comentarios= models.BooleanField(default=True)
     slug= models.SlugField(unique_for_date='creado')
     estado= models.IntegerField(choices=ESTADOS_CHOICES, default=ACTIVO)
@@ -57,17 +55,16 @@ class Post(models.Model):
         return 'Titulo: %s Estado: %s' % (self.titulo, self.estado)
     
     def save(self, force_insert=False, force_update= False):
-        self.contenido_html= markdown(self.contenido)
-        if self.resumen:
-            self.resumen_html= markdown(self.resumen)
+        self.contenido_html= markdown(self.contenido)        
         super(Post,self).save(force_insert, force_update)      
     
     class Meta:
         ordering = ["creado"]
         
-    
+    @models.permalink
     def get_absolute_url(self):
-        return "/blog/post/verpost/%i/" % self.id
+        return ('blog.views.ver_Post', [str(self.id)])
+
 
     
       

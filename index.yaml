@@ -30,6 +30,11 @@ indexes:
   properties:
   - name: estado
   - name: creado
+
+- kind: blog_post
+  properties:
+  - name: estado
+  - name: creado
     direction: desc
 
 - kind: django_comments

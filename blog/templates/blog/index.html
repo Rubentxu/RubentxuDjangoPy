@@ -10,12 +10,12 @@
 
 	
     <p>{{ post.autor.username }} escribio:</p>   
-    <div class="postcontent"><p>{{ post.contenido_html|safe }}</p>
+    <div class="postcontent"><p>{{ post.contenido_html|truncatewords_html:"100"|safe }}</p>
     
     	<p>
     	<span class="button-wrapper"> <span class="l">
     	</span> <span class="r"> </span> <a class="button"
-		href="/blog/post/verpost/{{ post.id }}/">Comentarios..</a> </span>
+		href="{{ post.get_absolute_url }}">Ver Mas..</a> </span>
 		</p>
 		<div class="cleared"></div>
 		
@@ -28,8 +28,8 @@
 {% endblock %}
 {%block contBarraLat%}
 {% if user.is_authenticated %}
-  <p><a href="/blog/post/crearpost/">Crear Post</a></p>
-  <p><a href="/blog/post/listpost/">Listar Posts</a></p>  
+  <p><a href="{% url blog.views.crear_Post %}">Crear Post</a></p>
+  <p><a href="{% url blog.views.lista_Posts %}">Listar Posts</a></p>  
  
 {%endif%}
 {% endblock %} 
