@@ -1,0 +1,25 @@
+{% extends 'blog/post/base_post.html' %} 
+{% block content %}
+<h3>Lista de Posts Activos</h3>
+<table>
+	
+	<tr>
+		<th>Titulo</th>
+		<th>Autor</th>		
+		<th>Estado</th>		
+		<th>Categoria</th>
+		<th>Creado</th>
+	</tr>
+	{% for post in Posts %}
+	<tr>								  
+		<td class="relevante"><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a></td>
+		<td>{{ post.autor.username }}</td>		
+		<td>{{ post.get_estado_display }}</td>			
+		<td>{{ post.categoria.nombre }}</td>
+		<td>{{ post.creado|date:"F j, Y" }}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}
+

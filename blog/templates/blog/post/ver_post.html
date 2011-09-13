@@ -1,0 +1,18 @@
+{% extends 'blog/post/base_post.html' %} 
+{% block content %}
+	<h3>{{ Post.nombre }}</h3>
+	<p>Autor: {{Post.autor.username }}
+	<h3>Titulo: {{Post.titulo}}</h3>
+	<div>
+		{{ Post.contenido_html|safe }} 
+	</div>		
+{% endblock %} 
+		 
+{%block contBarraLat%} 
+		{% if user.is_authenticated %}
+	<p><a href="/blog/post/crearpost/">Crear Post</a></p>
+	<p><a href="/blog/post/modifpost/{{ Post.id }}">Modificar Post</a></p>
+	<p><a href="/blog/post/borrarpost/{{ Post.id }}">Borrar Post</a></p>
+	<p><a href="/blog/post/listpost/">Listar Posts</a></p>
+		{%endif%} 
+{%endblock%}

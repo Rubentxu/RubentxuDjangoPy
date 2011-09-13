@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block jquerys %}
+<script src="/media/js/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="/media/js/jquery.markitup.js"></script>
+<script type="text/javascript" src="/media/js/sets/default/set.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/js/skins/markitup/style.css" />
+<link rel="stylesheet" type="text/css" href="/media/js/sets/default/style.css" />
+
+
+<script language="javascript">
+$(document).ready(function()	{
+    $('textarea').markItUp(myMarkdownSettings);
+    csrf=$('input[name="csrfmiddlewaretoken"]').val();
+    
+});
+</script>
+{% endblock %}
+ 
+{% block content %}
+<form action="." method="post">
+	<table>{{form.as_table}} {% csrf_token %}
+	</table>
+	<input type="submit" value="Guardar">
+</form>
+{% endblock %} 
+{%block titBarraLat%}Posts{%endblock%}
+{%block contBarraLat%}
+{% if user.is_authenticated %}
+  <p><a href="/blog/post/crearpost/">Crear Post</a></p>
+  <p><a href="/blog/post/listpost/">Listar Posts</a></p>  
+ 
+{%endif%}
+{% endblock %}
+ 
+
+

@@ -4,17 +4,21 @@ import os
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 TIME_ZONE = 'Europe/Madrid'
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
+LANGUAGE_CODE= 'es'
 
 INSTALLED_APPS = (
     'djangoappengine',
     'djangotoolbox',
     'django.contrib.auth',
+    'django.contrib.comments',
     'django.contrib.contenttypes',
+    'django.contrib.markup',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'django.contrib.admin',    
-    'django.contrib.admindocs',
-    'blog',    
+    'django.contrib.admin',
+    'markdown',
+    'blog',
+        
 )
 
 MIDDLEWARE_CLASSES = (
@@ -42,11 +46,21 @@ ROOT_URLCONF = 'urls'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s: %(message)s'
+        },
+    },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'simple'
+        },         
     },
     'loggers': {
         'django.request': {
@@ -54,5 +68,9 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+         'proyecto.app': {
+            'handlers': ['console'],
+            'level': 'DEBUG'
+        },        
     }
 }

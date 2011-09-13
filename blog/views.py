@@ -1,33 +1,106 @@
 from django.core.cache import cache
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.simple import direct_to_template
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.views.generic.simple import direct_to_template
-from blog.forms import CreatePostForm
-from blog.models import Post
+from blog.forms import *
+from blog.models import *
+from django.shortcuts import get_object_or_404, render_to_response
+from django.views.generic.list_detail import object_list
+import logging
+from django.contrib.auth.decorators import login_required 
+from django.contrib.admin.views.decorators import staff_member_required
+from markdown import markdown
 
+
+logger = logging.getLogger(__name__)
 MEMCACHE_Post = 'Post'
+MEMCACHE_listPost = 'listPost'
 
-def list_Posts(request):
+
+def mark(request):
+    logger.debug('Hemos entrado en mi vista: markdown')
+    data= request.POST.get('data')    
+    return HttpResponse(markdown(data)) 
+
+
+def index_Posts(request):
+    logger.debug('Hemos entrado en mi_vista: index_Posts')
     Posts = cache.get(MEMCACHE_Post)
     if Posts is None:
-        Posts = Post.objects.all().order_by('-fecha')[:10]
+        Posts = Post.activo.all().order_by('-creado')[:10]
+        logger.debug(Posts)
         cache.add(MEMCACHE_Post, Posts)
     return direct_to_template(request, 'blog/index.html',
-                              {'Posts': Posts,
-                               'form': CreatePostForm()})
+                              {'Posts': Posts})
 
-def create_Post(request):
+@login_required( login_url='/accounts/login/')
+@staff_member_required
+def lista_Posts(request):
+    logger.debug('Hemos entrado en mi_vista: lista_Posts')
+    Posts = cache.get(MEMCACHE_listPost)
+    if Posts is None:
+        Posts = Post.objects.all().order_by('-creado')[:10]
+        logger.debug(Posts)
+        cache.add(MEMCACHE_listPost, Posts)
+    return direct_to_template(request, 'blog/post/lista_posts.html',
+                              {'Posts': Posts})
+    
+@login_required( login_url='/accounts/login/')
+@staff_member_required
+def crear_Post(request):
+    logger.debug('Hemos entrado en mi_vista: crear_Post')
     if request.method == 'POST':
         form = CreatePostForm(request.POST)
         if form.is_valid():
+            logger.debug('Formulario Crear Valido...')            
             Post = form.save(commit=False)
-            if request.user.is_authenticated():
-                Post.autor = request.user
-            Post.save()
+            logger.debug(Post)            
+            Post.autor = request.user
+            Post.save()            
             cache.delete(MEMCACHE_Post)
-    return HttpResponseRedirect('/blog/')
+            cache.delete(MEMCACHE_listPost)
+            return HttpResponseRedirect('/blog/')
+    else:
+        form= CreatePostForm()      
+    return direct_to_template(request, 'blog/post/post_form.html',
+        {'form': form})
 
+
+def ver_Post(request, clave):
+    logger.debug('Hemos entrado en mi_vista: ver_Post')      
+    P= Post.objects.get(pk=clave)    
+    return direct_to_template(request,'blog/post/ver_post.html', 
+                              {'Post' : P  })
+    
+@login_required( login_url='/accounts/login/')    
+@staff_member_required    
+def modificar_Post(request, clave):
+    logger.debug('Hemos entrado en mi_vista: modificar_Post')    
+    p=Post.objects.get(pk=clave)
+    logger.debug(p)
+    if request.method == 'POST':
+        form = CreatePostForm(request.POST,instance=p)
+        if form.is_valid():
+            form.save()            
+            cache.delete(MEMCACHE_Post)
+            cache.delete(MEMCACHE_listPost)
+            return HttpResponseRedirect('/blog/')
+    else:
+        form = CreatePostForm(instance=p)
+    return direct_to_template(request, 'blog/post/post_form.html',
+        {'form': form})
+    
+@login_required( login_url='/accounts/login/')
+@staff_member_required      
+def borrar_Post(request, clave):
+    logger.debug('Hemos entrado en mi vista: borrar_Post')
+    Post.objects.get(pk=clave).delete()
+    cache.delete(MEMCACHE_Post)
+    cache.delete(MEMCACHE_listPost)
+    return HttpResponseRedirect('/blog/')    
+
+@login_required( login_url='/accounts/login/')
 def create_new_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -41,3 +114,10 @@ def create_new_user(request):
         form = UserCreationForm()
     return direct_to_template(request, 'blog/user_create_form.html',
         {'form': form})
+
+
+def categoria_detalle(request, slug):
+    categoria = get_object_or_404(Categoria, slug=slug)
+    return object_list(request, queryset=categoria.posts_activos(), extra_context={
+        'categoria': categoria
+    })

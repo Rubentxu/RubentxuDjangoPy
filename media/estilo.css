@@ -1754,7 +1754,7 @@ pre
 
 .post ul>li
 {
-  background-image: url('images/postbullets.png');
+  
   background-repeat: no-repeat;
   padding-left: 13px;/* makes "ul li" not to align behind the image if they are in the same line */
   overflow-x: visible;
@@ -1981,4 +1981,15 @@ img.image
     margin:0;
     padding:0;
     border:none;
+}
+.chronodata {
+padding-top: 2px;
+padding-right: 0pt;
+padding-bottom: 2px;
+padding-left: 20px;
+background-color: transparent;
+background-image: url("images/time.png");
+background-repeat: no-repeat;
+background-attachment: scroll;
+background-position: left center;
 }

@@ -1,20 +1,32 @@
 {% extends 'base.html' %}
-{% block content %}
-  <h2>Los 10 ultimos Post</h2>
+{% block content %} 
+  
   {% for post in Posts %}
-    {% if post.autor %}
-      <b>{{ post.autor.username }}</b> escribio:
-    {% else %}
-      Un Anonimo ha escrito:
-    {% endif %}
-    <blockquote>{{ post.titulo|escape }}</blockquote>
-    <blockquote>{{ post.contenido|escape }}</blockquote>
-    <blockquote>{{ post.fecha|date:"F j, Y" }}</blockquote>
-    <blockquote>{{ post.modificado|date:"F j, Y" }}</blockquote>
+  	
+  	<h2 class="postheader">{{ post.titulo|safe }}</h2>
+  	<p class="chronodata">Publicado: {{ post.creado|date:"F j, Y" }} <span>Categoria: {{ post.categoria.nombre }}  </span></p>
+  	  
+    <p>{{ post.autor.username }} escribio:</p>   
+    <div class="postcontent"><p>{{ post.contenido_html|safe }}</p>
+    
+    	<p>
+    	<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="javascript:void(0)">Leer Mas...</a> </span>
+		</p>
+		<div class="cleared"></div>
+		
+    
+    </div>
+   
+    
   {% endfor %}
-
-  <form action="/blog/sign" method="post">{% csrf_token %}
-    <table>{{ form }}</table>
-    <input type="submit" value="Publicar" />
-  </form>
+  
 {% endblock %}
+{%block contBarraLat%}
+{% if user.is_authenticated %}
+  <p><a href="/blog/post/crearpost/">Crear Post</a></p>
+  <p><a href="/blog/post/listpost/">Listar Posts</a></p>  
+ 
+{%endif%}
+{% endblock %} 

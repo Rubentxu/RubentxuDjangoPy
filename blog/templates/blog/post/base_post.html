@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{%block titBarraLat%}Posts{%endblock%}
+{%block contBarraLat%}
+{% if user.is_authenticated %}
+  
+  <p><a href="/blog/post/crearpost/">Crear Post</a></p> 
+ 
+{%endif%}
+{%endblock%}	
