@@ -4,7 +4,8 @@ from markdown import markdown
 
 class PostsActivosManager(models.Manager):
     def get_query_set(self):
-        return super(PostsActivosManager, self).get_query_set().filter(estado=self.model.ACTIVO)
+        return super(PostsActivosManager, self).get_query_set().filter(estado=self.model.ACTIVO)   
+   
 
 class Categoria(models.Model):    
     nombre = models.CharField(max_length=50, unique=True)
@@ -63,25 +64,21 @@ class Post(models.Model):
         
     @models.permalink
     def get_absolute_url(self):
-        return ('blog.views.ver_Post', [str(self.id)])
-
-
-    
-      
+        return ('blog.views.ver_Post', [str(self.id)])      
                        
 
-class Tag(models.Model):
-    post = models.ForeignKey(Post, null=True, blank=True)
-    nombre = models.CharField(max_length=50)
-    descripcion = models.TextField()
+class Tag(models.Model):    
+    etiqueta = models.CharField(max_length=50)
+    post = models.ForeignKey(Post)    
+    
+    objects= models.Manager()
+   
     
     def __unicode__(self):
-        return 'Etiqueta: %s Descripcion: %s' % (self.nombre, self.descripcion) 
+        return 'Etiqueta: %s' % (self.etiqueta) 
      
     class Meta:
-        ordering = ["nombre"]
-        unique_together= ['nombre','descripcion']
+        ordering = ["etiqueta"]
+        
+    
            
-    
-
-    

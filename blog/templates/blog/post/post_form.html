@@ -19,7 +19,7 @@ $(document).ready(function()	{
  
 {%block cuerpo %}
 <form action="." method="post">
-	<table>{{form.as_table}} {% csrf_token %}
+	<table>{{form.as_table}} {{tform.as_table}} {% csrf_token %}
 	</table>
 	<input type="submit" value="Guardar">
 </form>

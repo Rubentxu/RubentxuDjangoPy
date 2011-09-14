@@ -2,15 +2,15 @@ from django.core.cache import cache
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.simple import direct_to_template
 from django.http import HttpResponseRedirect,HttpResponse
-from django.views.generic.simple import direct_to_template
-from blog.forms import *
+from blog.forms import CreatePostForm ,TagForm
 from blog.models import *
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404
 from django.views.generic.list_detail import object_list
 import logging
 from django.contrib.auth.decorators import login_required 
 from django.contrib.admin.views.decorators import staff_member_required
 from markdown import markdown
+from django.forms.models import formset_factory
 
 
 logger = logging.getLogger(__name__)
@@ -50,22 +50,36 @@ def lista_Posts(request):
 @staff_member_required
 def crear_Post(request):
     logger.debug('Hemos entrado en mi_vista: crear_Post')
+    PostFormSet= formset_factory(CreatePostForm)
+    TagFormSet= formset_factory(TagForm,extra=4)
+    
     if request.method == 'POST':
-        form = CreatePostForm(request.POST)
-        if form.is_valid():
-            logger.debug('Formulario Crear Valido...')            
-            Post = form.save(commit=False)
-            logger.debug(Post)            
-            Post.autor = request.user
-            Post.save()            
+        formset = PostFormSet(request.POST ,prefix='post')
+        tagformset= TagFormSet(request.POST, prefix='tag')       
+        
+        if formset.is_valid() and tagformset.is_valid():
+            logger.debug('Formulario Crear Valido...')
+                   
+            for instance in formset:                
+                post=instance.save(commit=False)
+                post.autor= request.user                            
+                post.save()
+                
+            for tag in tagformset:
+                t=tag.save(commit=False)
+                t.post= formset[0].save(commit=False)                
+                t.save()
+                
             cache.delete(MEMCACHE_Post)
             cache.delete(MEMCACHE_listPost)
             return HttpResponseRedirect('/blog/')
     else:
-        form= CreatePostForm()      
+        formset = PostFormSet(prefix='post')
+        tagformset= TagFormSet(prefix='tag')   
     return direct_to_template(request, 'blog/post/post_form.html',
-        {'form': form})
-
+        {'form': formset,
+         'tform': tagformset})
+ 
 
 def ver_Post(request, clave):
     logger.debug('Hemos entrado en mi_vista: ver_Post')      

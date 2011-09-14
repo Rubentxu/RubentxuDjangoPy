@@ -4,3 +4,15 @@
 .git/*
 /*.pyc
 *.pyc
+blog/**/*.pyc
+blog/*.pyc
+blog/*.pyc
+blog/*/*.pyc
+django/*/*.py
+django/*/*/*.py
+dbindexer/*.py
+dbindexer/*/*/*.py
+dbindexer/*/*.py
+djangoappengine/*.py
+djangoappengine/*/*/*.py
+djangoappengine/*/*.py
