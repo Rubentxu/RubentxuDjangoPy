@@ -5,14 +5,14 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 TIME_ZONE = 'Europe/Madrid'
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 LANGUAGE_CODE= 'es'
-SITE_ID = 1
+
 
 GAE_SETTINGS_MODULES = (
     'gae_comments_settings',
 )
 
 
-INSTALLED_APPS = (
+INSTALLED_APPS = (    
     'djangoappengine',
     'djangotoolbox',
     'django.contrib.auth',
@@ -21,7 +21,8 @@ INSTALLED_APPS = (
     'django.contrib.markup',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'django.contrib.admin',
+    'django.contrib.admin',    
+    'django.contrib.sitemaps',
     'markdown',
     'blog',
         
@@ -34,6 +35,8 @@ MIDDLEWARE_CLASSES = (
    'django.contrib.auth.middleware.AuthenticationMiddleware',
    'django.contrib.messages.middleware.MessageMiddleware',   
 )
+
+
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',

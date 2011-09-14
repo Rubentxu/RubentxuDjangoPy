@@ -28,6 +28,12 @@ indexes:
 
 - kind: blog_post
   properties:
+  - name: categoria_id
+  - name: estado
+  - name: creado
+
+- kind: blog_post
+  properties:
   - name: estado
   - name: creado
 
