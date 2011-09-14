@@ -1,0 +1,6 @@
+.gaedata/*
+.project
+.pydevproject
+.git/*
+/*.pyc
+*.pyc

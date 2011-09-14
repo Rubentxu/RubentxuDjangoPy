@@ -1,29 +1,8 @@
 {% extends 'base.html' %}
 {% block content %} 
   {% load comments %}
-  {% for post in Posts %}
-  	{% get_comment_count for post as comment_count %}
-  	<h2 class="postheader">{{ post.titulo|safe }}</h2>
-  	<p class="chronodata">Publicado: {{ post.creado|date:"F j, Y" }} ||
-  	<span>Categoria: {{ post.categoria.nombre }} || <b>  {{ comment_count }} comentarios.</b></span></p>
-  	
-
-	
-    <p>{{ post.autor.username }} escribio:</p>   
-    <div class="postcontent"><p>{{ post.contenido_html|truncatewords_html:"100"|safe }}</p>
-    
-    	<p>
-    	<span class="button-wrapper"> <span class="l">
-    	</span> <span class="r"> </span> <a class="button"
-		href="{{ post.get_absolute_url }}">Ver Mas..</a> </span>
-		</p>
-		<div class="cleared"></div>
-		
-    
-    </div>
-   
-    
-  {% endfor %}
+  {% include "blog/post/include_post.html" with post=post greeting="Hello" %}
+  
   
 {% endblock %}
 {%block contBarraLat%}

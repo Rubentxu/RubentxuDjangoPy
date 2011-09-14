@@ -1,7 +1,8 @@
 {% extends 'blog/post/base_post.html' %} 
-{% block content %}
+{%block cuerpo %}
+
 <h3>Lista de Posts Activos</h3>
-<table>
+<table class="lista">
 	
 	<tr>
 		<th>Titulo</th>
@@ -20,6 +21,6 @@
 	</tr>
 	{% endfor %}
 </table>
-
+  
 {% endblock %}
 

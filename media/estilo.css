@@ -200,6 +200,30 @@ table.position
   width: 100%;
   table-layout: fixed;
 }
+.lista
+{
+  border-style:double;
+  border-color: black;   
+  width: 100%;
+  margin: 1em;
+ 
+}
+.lista td{
+	padding 0.5em;
+	margin: 0.5em;
+	height: 40px;
+	width:100%;
+	border-style:solid;
+	border-bottom-color: black;
+	border-width: 1px;
+}
+.lista th{
+	padding 0.5em;
+	margin: 0.5em;
+	height: 40px;	
+	color: white;
+	background-color: #582B14;
+}
 /* end Page */
 
 /* begin Box, Sheet */
@@ -2055,5 +2079,11 @@ background-position: left center;
    border-top-right-radius:75px;
    border-bottom-left-radius:44px;
    border-bottom-right-radius:0px;
+}
+.relevante
+{
+	padding: 0.5em;
+	margin: 1em;
+	width: 230px;
 }
 

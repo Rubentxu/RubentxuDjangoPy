@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="post">
+	<div class="post-tl"></div>
+	<div class="post-tr"></div>
+	<div class="post-bl"></div>
+	<div class="post-br"></div>
+	<div class="post-tc"></div>
+	<div class="post-bc"></div>
+	<div class="post-cl"></div>
+	<div class="post-cr"></div>
+	<div class="post-cc"></div>
+	<div class="post-body">
+		<div class="post-inner article">
+		
   {% if form.errors %}
     <p>Tu nombre o password no corresponde con nada en la base de datos.</p>
   {% endif %}
@@ -10,4 +23,11 @@
     <input type="submit" value="login" />
      <input type="hidden" name="next" value="{{ next }}" />
   </form>
+  
+  <div class="cleared"></div>
+</div>
+
+<div class="cleared"></div>
+</div>
+</div>    
 {% endblock %}

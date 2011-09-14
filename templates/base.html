@@ -77,7 +77,9 @@
 					<div class="content-layout-row">
 						<div class="layout-cell content">
 														
-							<div class="post">
+							
+										{% block content %}
+						<div class="post">
 								<div class="post-tl"></div>
 								<div class="post-tr"></div>
 								<div class="post-bl"></div>
@@ -88,8 +90,7 @@
 								<div class="post-cr"></div>
 								<div class="post-cc"></div>
 								<div class="post-body">
-									<div class="post-inner article">
-										{% block content %} 
+									<div class="post-inner article"> 
 										<h2 class="postheader">{% block contentitulo %}Welcome{% endblock %}</h2>
 										<div class="postcontent">
 											<!-- article-content -->
@@ -157,13 +158,14 @@
 											
 											<!-- /article-content -->
 										</div>
-										{% endblock %}
-										<div class="cleared"></div>
+									<div class="cleared"></div>
 									</div>
 
 									<div class="cleared"></div>
 								</div>
 							</div>
+										{% endblock %}
+							
 							
 							
 						</div>

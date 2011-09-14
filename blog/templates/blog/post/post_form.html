@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'blog/post/base_post.html' %} 
 
 {% block jquerys %}
 <script src="/media/js/jquery.js" type="text/javascript"></script>
@@ -17,7 +17,7 @@ $(document).ready(function()	{
 </script>
 {% endblock %}
  
-{% block content %}
+{%block cuerpo %}
 <form action="." method="post">
 	<table>{{form.as_table}} {% csrf_token %}
 	</table>
