@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
 {% block content %} 
   {% load comments %}
-  {% include "blog/post/include_post.html" with post=post greeting="Hello" %}
-  
+  {% include "blog/post/include_post.html"   %}
+  	<div class='paginacion'>
+  		{% if pag != atras%}
+  		<a  class="atras" href="{% url blog.views.index_Posts atras %}"><-- Atras</a>
+  		{% endif%}
+  		{% if pag != sig%}  	
+  		<a class="sig" href="{% url blog.views.index_Posts sig %}">Siguiente --></a>
+  		{% endif%}
+  	</div>
   
 {% endblock %}
 {%block contBarraLat%}

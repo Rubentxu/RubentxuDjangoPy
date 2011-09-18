@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from markdown import markdown
+from django.template.defaultfilters import slugify
+import datetime
 
 class PostsActivosManager(models.Manager):
     def get_query_set(self):
@@ -40,11 +42,11 @@ class Post(models.Model):
     autor = models.ForeignKey(User)
     titulo= models.CharField(max_length=50,unique=True)
     contenido = models.TextField()    
-    creado = models.DateTimeField(auto_now_add=True)
-    modificado= models.DateTimeField(auto_now_add=True)
+    creado = models.DateTimeField(editable=False)
+    modificado= models.DateTimeField(editable=False)
     contenido_html= models.TextField(editable=False,blank=True)     
     activa_comentarios= models.BooleanField(default=True)
-    slug= models.SlugField(unique_for_date='creado')
+    slug= models.SlugField(unique=True,editable=False)
     estado= models.IntegerField(choices=ESTADOS_CHOICES, default=ACTIVO)
     categoria= models.ForeignKey(Categoria)    
     
@@ -56,7 +58,11 @@ class Post(models.Model):
         return 'Titulo: %s Estado: %s' % (self.titulo, self.estado)
     
     def save(self, force_insert=False, force_update= False):
-        self.contenido_html= markdown(self.contenido)        
+        self.contenido_html= markdown(self.contenido)
+        if not self.id:
+            self.slug= slugify(self.titulo)
+            self.creado= datetime.datetime.today()
+        self.modificado= datetime.datetime.today()            
         super(Post,self).save(force_insert, force_update)      
     
     class Meta:
@@ -64,7 +70,7 @@ class Post(models.Model):
         
     @models.permalink
     def get_absolute_url(self):
-        return ('blog.views.ver_Post', [str(self.id)])      
+        return ('blog.views.ver_Post', [str(self.slug)])      
                        
 
 class Tag(models.Model):    

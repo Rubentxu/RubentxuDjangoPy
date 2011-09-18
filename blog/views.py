@@ -2,7 +2,7 @@ from django.core.cache import cache
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.simple import direct_to_template
 from django.http import HttpResponseRedirect,HttpResponse
-from blog.forms import CreatePostForm ,TagForm
+from blog.forms import PostForm ,TagForm
 from blog.models import *
 from django.shortcuts import get_object_or_404
 from django.views.generic.list_detail import object_list
@@ -10,13 +10,12 @@ import logging
 from django.contrib.auth.decorators import login_required 
 from django.contrib.admin.views.decorators import staff_member_required
 from markdown import markdown
-from django.forms.models import formset_factory
-
+from django.forms.models import formset_factory,inlineformset_factory
+from django.core.paginator import Paginator , EmptyPage, PageNotAnInteger
 
 logger = logging.getLogger(__name__)
 MEMCACHE_Post = 'Post'
 MEMCACHE_listPost = 'listPost'
-
 
 def mark(request):
     logger.debug('Hemos entrado en mi vista: markdown')
@@ -24,25 +23,46 @@ def mark(request):
     return HttpResponse(markdown(data)) 
 
 
-def index_Posts(request):
-    logger.debug('Hemos entrado en mi_vista: index_Posts')
-    Posts = cache.get(MEMCACHE_Post)
+def index_Posts(request, pagina):
+    logger.debug('Hemos entrado en mi_vista: index_Posts')    
+    pagina= int(pagina)
+    inicio=  5*(pagina-1)    
+    fin=   (5*pagina)-1    
+    Posts = cache.get(MEMCACHE_Post+str(pagina))
+    cantidad= Post.activo.all().count()                 
+    logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
     if Posts is None:
-        Posts = Post.activo.all().order_by('-creado')[:10]
+        Posts = Post.activo.all().order_by('-creado')[inicio:fin]        
         logger.debug(Posts)
-        cache.add(MEMCACHE_Post, Posts)
+        cache.add(MEMCACHE_Post+str(pagina), Posts)   
+              
+    atras=pagina-1 if inicio>1 else pagina
+    sig=pagina+1 if fin<cantidad else pagina    
+        
     return direct_to_template(request, 'blog/index.html',
-                              {'Posts': Posts})
+                              {'Posts': Posts,
+                               'atras': atras,
+                               'sig':sig,
+                               'pag':pagina})
 
 @login_required( login_url='/accounts/login/')
 @staff_member_required
 def lista_Posts(request):
-    logger.debug('Hemos entrado en mi_vista: lista_Posts')
-    Posts = cache.get(MEMCACHE_listPost)
-    if Posts is None:
-        Posts = Post.objects.all().order_by('-creado')[:10]
-        logger.debug(Posts)
-        cache.add(MEMCACHE_listPost, Posts)
+    logger.debug('Hemos entrado en mi_vista: lista_Posts')           
+            
+    Posts = Post.objects.all().order_by('-creado')       
+    logger.debug(Posts)        
+    paginator= Paginator (Posts,5)
+    page= request.GET.get('page')
+    
+    if page is None or page=='':
+        page=1
+    try:
+        Posts= paginator.page(int(page))
+    except PageNotAnInteger:
+        Posts= paginator.page(1)
+    except EmptyPage:
+        Posts= paginator.page(paginator.num_pages)       
     return direct_to_template(request, 'blog/post/lista_posts.html',
                               {'Posts': Posts})
     
@@ -50,66 +70,85 @@ def lista_Posts(request):
 @staff_member_required
 def crear_Post(request):
     logger.debug('Hemos entrado en mi_vista: crear_Post')
-    PostFormSet= formset_factory(CreatePostForm)
-    TagFormSet= formset_factory(TagForm,extra=4)
+    
+    inlineForm= inlineformset_factory(Post, Tag, extra=4,can_delete=False)
     
     if request.method == 'POST':
-        formset = PostFormSet(request.POST ,prefix='post')
-        tagformset= TagFormSet(request.POST, prefix='tag')       
+        formset= PostForm(request.POST)
+        tagformset= inlineForm(request.POST, request.FILES)
         
         if formset.is_valid() and tagformset.is_valid():
-            logger.debug('Formulario Crear Valido...')
-                   
-            for instance in formset:                
-                post=instance.save(commit=False)
-                post.autor= request.user                            
-                post.save()
-                
+            logger.debug('Formulario Modificar Valido...')                   
+                          
+            post=formset.save(commit=False)
+            post.autor= request.user                            
+            post.save() 
+                         
             for tag in tagformset:
                 t=tag.save(commit=False)
-                t.post= formset[0].save(commit=False)                
-                t.save()
-                
-            cache.delete(MEMCACHE_Post)
-            cache.delete(MEMCACHE_listPost)
+                if not (t.etiqueta is None or t.etiqueta==''):
+                    t.post= post               
+                    t.save()
+            cantidad= Post.activo.all().count()/5
+            for a in range(1,cantidad+2):
+                logger.debug('cache pagina:'+ str(a))
+                cache.delete(MEMCACHE_Post+str(a))            
             return HttpResponseRedirect('/blog/')
     else:
-        formset = PostFormSet(prefix='post')
-        tagformset= TagFormSet(prefix='tag')   
+        formset= PostForm()
+        tagformset = inlineForm()
     return direct_to_template(request, 'blog/post/post_form.html',
         {'form': formset,
          'tform': tagformset})
  
 
-def ver_Post(request, clave):
+def ver_Post(request, slug):
     logger.debug('Hemos entrado en mi_vista: ver_Post')      
-    P= Post.objects.get(pk=clave)    
+    P= Post.objects.get(slug=slug)    
     return direct_to_template(request,'blog/post/ver_post.html', 
                               {'Post' : P  })
     
 @login_required( login_url='/accounts/login/')    
 @staff_member_required    
-def modificar_Post(request, clave):
-    logger.debug('Hemos entrado en mi_vista: modificar_Post')    
-    p=Post.objects.get(pk=clave)
-    logger.debug(p)
+def modificar_Post(request, slug):
+    logger.debug('Hemos entrado en mi_vista: modificar_Post')
+    inlineForm= inlineformset_factory(Post, Tag, extra=2,can_delete=False)
+    
+    p= Post.objects.select_related().get(slug=slug)            
+        
     if request.method == 'POST':
-        form = CreatePostForm(request.POST,instance=p)
-        if form.is_valid():
-            form.save()            
+        formset= PostForm(request.POST,instance=p)
+        tagformset= inlineForm(request.POST, request.FILES, instance=p)
+        
+        if formset.is_valid() and tagformset.is_valid():
+            logger.debug('Formulario Modificar Valido...')                   
+                          
+            post=formset.save(commit=False)
+            post.autor= request.user                            
+            post.save() 
+                         
+            for tag in tagformset:
+                t=tag.save(commit=False)
+                if not (t.etiqueta is None or t.etiqueta==''):
+                    t.post= post               
+                    t.save()
+                
             cache.delete(MEMCACHE_Post)
-            cache.delete(MEMCACHE_listPost)
+            cache            
             return HttpResponseRedirect('/blog/')
     else:
-        form = CreatePostForm(instance=p)
+        formset= PostForm(instance=p)
+        tagformset = inlineForm(instance=p)
+         
     return direct_to_template(request, 'blog/post/post_form.html',
-        {'form': form})
+        {'form': formset,
+         'tform': tagformset})
     
 @login_required( login_url='/accounts/login/')
 @staff_member_required      
-def borrar_Post(request, clave):
+def borrar_Post(request, slug):
     logger.debug('Hemos entrado en mi vista: borrar_Post')
-    Post.objects.get(pk=clave).delete()
+    Post.objects.select_related().get(slug=slug).delete()
     cache.delete(MEMCACHE_Post)
     cache.delete(MEMCACHE_listPost)
     return HttpResponseRedirect('/blog/')    

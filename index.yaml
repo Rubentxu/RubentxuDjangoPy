@@ -43,6 +43,11 @@ indexes:
   - name: creado
     direction: desc
 
+- kind: blog_tag
+  properties:
+  - name: post_id
+  - name: etiqueta
+
 - kind: django_comments
   properties:
   - name: content_type_id

@@ -11,7 +11,7 @@
 		<th>Categoria</th>
 		<th>Creado</th>
 	</tr>
-	{% for post in Posts %}
+	{% for post in Posts.object_list  %}
 	<tr>								  
 		<td class="relevante"><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a></td>
 		<td>{{ post.autor.username }}</td>		
@@ -20,7 +20,23 @@
 		<td>{{ post.creado|date:"F j, Y" }}</td>
 	</tr>
 	{% endfor %}
+	
 </table>
+<div class="paginacion">
+    <span class="step-links">
+        {% if Posts.has_previous %}
+            <a href="?page={{ Posts.previous_page_number }}"><--Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ Posts.number }} of {{ Posts.paginator.num_pages }}.
+        </span>
+
+        {% if Posts.has_next %}
+            <a href="?page={{ Posts.next_page_number }}">Siguiente--></a>
+        {% endif %}
+    </span>
+</div>
   
 {% endblock %}
 

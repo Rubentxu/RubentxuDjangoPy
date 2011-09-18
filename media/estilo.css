@@ -2086,4 +2086,18 @@ background-position: left center;
 	margin: 1em;
 	width: 230px;
 }
-
+.paginacion{
+	border-style: solid;
+	border-width: 2px;
+	height: 1.5em;
+	margin: 1em;
+	padding: 0.3em;
+	background-color: #DFE3E1;
+	
+}
+.atras {	
+	float: left;	
+}
+.sig {	
+	float: right;
+}

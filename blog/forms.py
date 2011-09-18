@@ -1,7 +1,8 @@
-from django import forms
-from blog.models import Post ,Tag
+from django import forms  
+from django.forms.models import inlineformset_factory
+from blog.models import Post ,Tag, Categoria
 
-class CreatePostForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ['autor']       
@@ -11,4 +12,6 @@ class CreatePostForm(forms.ModelForm):
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
-        exclude = ['post']        
+        exclude = ['post']      
+        
+postInline= inlineformset_factory(Post, Tag)          
