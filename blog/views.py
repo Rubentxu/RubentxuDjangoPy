@@ -2,7 +2,7 @@ from django.core.cache import cache
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.simple import direct_to_template
 from django.http import HttpResponseRedirect,HttpResponse
-from blog.forms import PostForm ,TagForm
+from blog.forms import *
 from blog.models import *
 from django.shortcuts import get_object_or_404
 from django.views.generic.list_detail import object_list
@@ -12,6 +12,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from markdown import markdown
 from django.forms.models import formset_factory,inlineformset_factory
 from django.core.paginator import Paginator , EmptyPage, PageNotAnInteger
+from django.utils.datetime_safe import datetime
+
 
 logger = logging.getLogger(__name__)
 MEMCACHE_Post = 'Post'
@@ -27,7 +29,7 @@ def index_Posts(request, pagina):
     logger.debug('Hemos entrado en mi_vista: index_Posts')    
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
-    fin=   (5*pagina)-1    
+    fin=   (5*pagina)    
     Posts = cache.get(MEMCACHE_Post+str(pagina))
     cantidad= Post.activo.all().count()                 
     logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
@@ -71,32 +73,37 @@ def lista_Posts(request):
 def crear_Post(request):
     logger.debug('Hemos entrado en mi_vista: crear_Post')
     
-    inlineForm= inlineformset_factory(Post, Tag, extra=4,can_delete=False)
+    pformset= PostForm
+    tformset= formset_factory( TagForm, extra=4,can_delete=False)
     
     if request.method == 'POST':
-        formset= PostForm(request.POST)
-        tagformset= inlineForm(request.POST, request.FILES)
-        
-        if formset.is_valid() and tagformset.is_valid():
-            logger.debug('Formulario Modificar Valido...')                   
+        formset= pformset(request.POST,request.FILES,prefix='post')
+        tagformset= tformset(request.POST, request.FILES,prefix='tag')
+        logger.debug('Formulario Crear Valido...')
+        if formset.is_valid() and tagformset.is_valid():                               
                           
             post=formset.save(commit=False)
             post.autor= request.user                            
             post.save() 
-                         
-            for tag in tagformset:
-                t=tag.save(commit=False)
-                if not (t.etiqueta is None or t.etiqueta==''):
-                    t.post= post               
-                    t.save()
+            logger.debug('Post: '+ str(post.id))             
+            for tag in tagformset:                
+                t=tag.save(commit=False)                
+                if not (t.etiqueta is None or t.etiqueta==''):                    
+                    try:
+                        t= Tag.objects.get(etiqueta=t.etiqueta)                                  
+                    except Tag.DoesNotExist:
+                        t.save()                                                              
+                    logger.debug(' Tag id: '+str(t.id))
+                    Post_Tag.objects.create(post=post,tag=t)                                                                        
+                
             cantidad= Post.activo.all().count()/5
             for a in range(1,cantidad+2):
                 logger.debug('cache pagina:'+ str(a))
                 cache.delete(MEMCACHE_Post+str(a))            
             return HttpResponseRedirect('/blog/')
     else:
-        formset= PostForm()
-        tagformset = inlineForm()
+        formset= pformset(prefix='post')
+        tagformset = tformset(prefix='tag')
     return direct_to_template(request, 'blog/post/post_form.html',
         {'form': formset,
          'tform': tagformset})
@@ -131,7 +138,7 @@ def modificar_Post(request, slug):
                 t=tag.save(commit=False)
                 if not (t.etiqueta is None or t.etiqueta==''):
                     t.post= post               
-                    t.save()
+                    t.save(True, True)
                 
             cache.delete(MEMCACHE_Post)
             cache            

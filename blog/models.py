@@ -74,11 +74,7 @@ class Post(models.Model):
                        
 
 class Tag(models.Model):    
-    etiqueta = models.CharField(max_length=50)
-    post = models.ForeignKey(Post)    
-    
-    objects= models.Manager()
-   
+    etiqueta = models.CharField(max_length=50,unique=True)   
     
     def __unicode__(self):
         return 'Etiqueta: %s' % (self.etiqueta) 
@@ -87,4 +83,9 @@ class Tag(models.Model):
         ordering = ["etiqueta"]
         
     
-           
+class Post_Tag(models.Model):    
+    post = models.ForeignKey(Post)
+    tag= models.ForeignKey(Tag)      
+    
+    def __unicode__(self):
+        return 'Post: %s ' % (self.post) 

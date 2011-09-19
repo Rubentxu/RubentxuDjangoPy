@@ -43,6 +43,11 @@ indexes:
   - name: creado
     direction: desc
 
+- kind: blog_post_tag
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: blog_tag
   properties:
   - name: post_id
