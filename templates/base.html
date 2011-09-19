@@ -9,7 +9,15 @@
 {% block jquerys %}<!-- CODIGO EXTRA -->{% endblock %}
 <link rel="stylesheet" href="/media/estilo.css" type="text/css"
 	media="screen" />
-
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript"> 
+  google.load('search', '1', {language : 'es', style : google.loader.themes.SHINY});
+  google.setOnLoadCallback(function() {
+    var customSearchControl = new google.search.CustomSearchControl('001885404607443963327:jx3aenvneqo');
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    customSearchControl.draw('cse');
+  }, true);
+</script> 
 <!--[if IE 6]><link rel="stylesheet" href="../media/estilo.ie6.css" type="text/css" media="screen" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" href="../media/estilo.ie7.css" type="text/css" media="screen" /><![endif]-->
 </head>
@@ -76,8 +84,27 @@
 				<div class="content-layout">
 					<div class="content-layout-row">
 						<div class="layout-cell content">
-														
-							
+						
+						
+						<div class="post">
+								<div class="post-tl"></div>
+								<div class="post-tr"></div>
+								<div class="post-bl"></div>
+								<div class="post-br"></div>
+								<div class="post-tc"></div>
+								<div class="post-bc"></div>
+								<div class="post-cl"></div>
+								<div class="post-cr"></div>
+								<div class="post-cc"></div>
+								<div class="post-body">
+									<div class="post-inner article"> 										
+										<div class="postcontent">
+										<div id="cse" style="width: 100%;">Cargando..</div>
+										</div>
+									</div>	
+								</div>
+						</div>							
+								
 										{% block content %}
 						<div class="post">
 								<div class="post-tl"></div>
@@ -188,8 +215,7 @@
 										<div class="blockcontent-cl"></div>
 										<div class="blockcontent-cr"></div>
 										<div class="blockcontent-cc"></div>
-										<div class="blockcontent-body">
-											<!-- block-content -->
+										<div class="blockcontent-body">											
 											{%block contBarraLat%} {%endblock %}
 											<!-- /block-content -->
 
