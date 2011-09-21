@@ -1,0 +1,46 @@
+ {% load comments %}
+  {% for pc in Posts %}
+  <div class="post">
+	<div class="post-tl"></div>
+	<div class="post-tr"></div>
+	<div class="post-bl"></div>
+	<div class="post-br"></div>
+	<div class="post-tc"></div>
+	<div class="post-bc"></div>
+	<div class="post-cl"></div>
+	<div class="post-cr"></div>
+	<div class="post-cc"></div>
+	<div class="post-body">
+		<div class="post-inner article">
+  	
+  	{% get_comment_count for pc as comment_count %}
+  	<h2 class="postheader">{{ pc.titulo|safe }}</h2>
+  	<p class="chronodata">Publicado: {{ pc.creado|date:"F j, Y" }} ||
+  	<span>Categoria: {{ pc.categoria.nombre }} || <b>  {{ comment_count }} comentarios.</b></span></p>
+  	
+  	
+    
+    
+  	
+  	
+
+	
+    <p>{{ pc.autor.username }} escribio:</p>   
+    <div class="postcontent"><p>{{ pc.contenido_html|truncatewords_html:"100"|safe }}</p>
+    
+    	<p>
+    	<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="{{ pc.get_absolute_url }}">Ver Mas..</a> </span>
+		</p>
+		<div class="cleared"></div>
+		
+    
+    </div>   
+<div class="cleared"></div>
+</div>
+
+<div class="cleared"></div>
+</div>
+</div>    
+  {% endfor %}

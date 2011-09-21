@@ -4,6 +4,7 @@ from markdown import markdown
 from django.template.defaultfilters import slugify
 import datetime
 
+
 class PostsActivosManager(models.Manager):
     def get_query_set(self):
         return super(PostsActivosManager, self).get_query_set().filter(estado=self.model.ACTIVO)   
@@ -74,7 +75,7 @@ class Post(models.Model):
                        
 
 class Tag(models.Model):    
-    etiqueta = models.CharField(max_length=50,unique=True)   
+    etiqueta = models.CharField(max_length=50)   
     
     def __unicode__(self):
         return 'Etiqueta: %s' % (self.etiqueta) 
@@ -88,4 +89,5 @@ class Post_Tag(models.Model):
     tag= models.ForeignKey(Tag)      
     
     def __unicode__(self):
-        return 'Post: %s ' % (self.post) 
+        return 'Post: %s ' % (self.post)    
+    

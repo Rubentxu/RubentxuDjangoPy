@@ -29,6 +29,17 @@ indexes:
 - kind: blog_post
   properties:
   - name: categoria_id
+  - name: creado
+
+- kind: blog_post
+  properties:
+  - name: categoria_id
+  - name: creado
+    direction: desc
+
+- kind: blog_post
+  properties:
+  - name: categoria_id
   - name: estado
   - name: creado
 

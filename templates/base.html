@@ -55,14 +55,7 @@
 						{%block menu%}
 						<li><a href="/" class="active"><span class="l"></span><span
 								class="r"></span><span class="t"> Inicio</span> </a>
-						</li>
-						<li><a href="/post/tutos/listatutos" class="active"><span class="l"></span>
-						<span class="r"></span><span class="t">Tutoriales</span></a>
-						</li>
-						</li>
-						<li><a href="/chuletas" class="active"><span class="l"></span>
-						<span class="r"></span><span class="t">Chuletas</span></a>
-						</li>
+						</li>						
 						<li><a href="/acercade" class="active"><span class="l"></span>
 						<span class="r"></span><span class="t">Acerca de..</span></a>
 						</li>
@@ -203,7 +196,7 @@
 									<div class="blockheader">
 										<div class="l"></div>
 										<div class="r"></div>
-										<div class="t">{%block titBarraLat%}Posts{%endblock%}</div>
+										<div class="t">{%block titBarraLat%}Blog{%endblock%}</div>
 									</div>
 									<div class="blockcontent">
 										<div class="blockcontent-tl"></div>
@@ -215,8 +208,32 @@
 										<div class="blockcontent-cl"></div>
 										<div class="blockcontent-cr"></div>
 										<div class="blockcontent-cc"></div>
-										<div class="blockcontent-body">											
-											{%block contBarraLat%} {%endblock %}
+										<div class="blockcontent-body">										
+										
+										{%block contBarraLat%} {%endblock %}
+										
+										<p><a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" 
+										class="rss-tag-icon2" title="RSS Posts">Feeds Posts</a></p>
+										<div class="cat">
+										<h2>Categorias</h2></p>
+										{% for c in cat%}
+											<a href="{% url blog.views.lista_Post_Categoria  c.nombre '1' %}" >{{ c.nombre }} |</a>											
+										{% endfor %}
+										
+										</div>
+										<div class="tag">
+										<h2>Nube de Tags</h2></p>
+										<div class="tag-cloud">
+									
+										{% for e, s in tags.items %}
+										<a href="{% url blog.views.lista_Post_Tag  e  '1' %}" class="size-{{ s }}">{{ e }} |</a> 											    											
+										{% endfor %}
+										</div>
+    
+
+										
+										</div>										
+											
 											<!-- /block-content -->
 
 											<div class="cleared"></div>
@@ -225,6 +242,42 @@
 									<div class="cleared"></div>
 								</div>
 							</div>
+							
+							<br/>
+							
+							<div class="block">
+								<div class="block-body">
+									<div class="blockheader">
+										<div class="l"></div>
+										<div class="r"></div>
+										<div class="t">Calendario</div>
+									</div>
+									<div class="blockcontent">
+										<div class="blockcontent-tl"></div>
+										<div class="blockcontent-tr"></div>
+										<div class="blockcontent-bl"></div>
+										<div class="blockcontent-br"></div>
+										<div class="blockcontent-tc"></div>
+										<div class="blockcontent-bc"></div>
+										<div class="blockcontent-cl"></div>
+										<div class="blockcontent-cr"></div>
+										<div class="blockcontent-cc"></div>
+										<div class="blockcontent-body">										
+									
+										<div class="calendario">	
+										<script src="http://www.gmodules.com/ig/ifr?url=http://www.google.com/ig/modules/calendar3.xml&amp;up_calendarFeeds=&amp;up_calendarColors=&amp;up_firstDay=1&amp;up_dateFormat=1&amp;up_timeFormat=1%3A00pm&amp;up_showDatepicker=1&amp;up_hideAgenda=1&amp;up_showEmptyDays=0&amp;up_showExpiredEvents=1&amp;synd=open&amp;w=200&amp;h=400&amp;title=__Blog_Calendar__&amp;lang=es&amp;country=ALL&amp;border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;output=js"></script>
+										</div>	
+																			
+											
+											<!-- /block-content -->
+
+											<div class="cleared"></div>
+										</div>
+									</div>
+									<div class="cleared"></div>
+								</div>
+							</div>
+							
 
 
 						</div>

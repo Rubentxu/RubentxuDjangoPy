@@ -1,4 +1,3 @@
-from django.core.cache import cache
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.simple import direct_to_template
 from django.http import HttpResponseRedirect,HttpResponse
@@ -13,30 +12,33 @@ from markdown import markdown
 from django.forms.models import formset_factory,inlineformset_factory
 from django.core.paginator import Paginator , EmptyPage, PageNotAnInteger
 from django.utils.datetime_safe import datetime
-
+from django.db.models import Count
+from django.views.decorators.cache import cache_page
 
 logger = logging.getLogger(__name__)
-MEMCACHE_Post = 'Post'
-MEMCACHE_listPost = 'listPost'
 
 def mark(request):
     logger.debug('Hemos entrado en mi vista: markdown')
     data= request.POST.get('data')    
     return HttpResponse(markdown(data)) 
 
-
+@cache_page(60 * 1)
 def index_Posts(request, pagina):
-    logger.debug('Hemos entrado en mi_vista: index_Posts')    
+    logger.debug('Hemos entrado en mi_vista: index_Posts')
+    cat=Categoria.objects.all()                                              
+    tag= Tag.objects.all()
+    tam= tag.count()
+    logger.debug('Tamanyo: '+ str(tam))    
+    tags= dict([(t.etiqueta,int(tam/t.post_tag_set.all().count()) ) for t in tag])   
+       
+    logger.debug(' Nube Tags: '+str(tags))      
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
-    fin=   (5*pagina)    
-    Posts = cache.get(MEMCACHE_Post+str(pagina))
+    fin=   (5*pagina)   
     cantidad= Post.activo.all().count()                 
     logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
-    if Posts is None:
-        Posts = Post.activo.all().order_by('-creado')[inicio:fin]        
-        logger.debug(Posts)
-        cache.add(MEMCACHE_Post+str(pagina), Posts)   
+    Posts = Post.activo.all().order_by('-creado')[inicio:fin]        
+    logger.debug(Posts)       
               
     atras=pagina-1 if inicio>1 else pagina
     sig=pagina+1 if fin<cantidad else pagina    
@@ -45,7 +47,9 @@ def index_Posts(request, pagina):
                               {'Posts': Posts,
                                'atras': atras,
                                'sig':sig,
-                               'pag':pagina})
+                               'pag':pagina,
+                               'cat':cat,
+                               'tags':tags})
 
 @login_required( login_url='/accounts/login/')
 @staff_member_required
@@ -71,8 +75,7 @@ def lista_Posts(request):
 @login_required( login_url='/accounts/login/')
 @staff_member_required
 def crear_Post(request):
-    logger.debug('Hemos entrado en mi_vista: crear_Post')
-    
+    logger.debug('Hemos entrado en mi_vista: crear_Post')   
     pformset= PostForm
     tformset= formset_factory( TagForm, extra=4,can_delete=False)
     
@@ -80,7 +83,7 @@ def crear_Post(request):
         formset= pformset(request.POST,request.FILES,prefix='post')
         tagformset= tformset(request.POST, request.FILES,prefix='tag')
         logger.debug('Formulario Crear Valido...')
-        if formset.is_valid() and tagformset.is_valid():                               
+        if formset.is_valid() :                               
                           
             post=formset.save(commit=False)
             post.autor= request.user                            
@@ -96,10 +99,7 @@ def crear_Post(request):
                     logger.debug(' Tag id: '+str(t.id))
                     Post_Tag.objects.create(post=post,tag=t)                                                                        
                 
-            cantidad= Post.activo.all().count()/5
-            for a in range(1,cantidad+2):
-                logger.debug('cache pagina:'+ str(a))
-                cache.delete(MEMCACHE_Post+str(a))            
+            cantidad= Post.activo.all().count()/5                  
             return HttpResponseRedirect('/blog/')
     else:
         formset= pformset(prefix='post')
@@ -138,10 +138,8 @@ def modificar_Post(request, slug):
                 t=tag.save(commit=False)
                 if not (t.etiqueta is None or t.etiqueta==''):
                     t.post= post               
-                    t.save(True, True)
-                
-            cache.delete(MEMCACHE_Post)
-            cache            
+                    t.save(True, True)          
+              
             return HttpResponseRedirect('/blog/')
     else:
         formset= PostForm(instance=p)
@@ -156,8 +154,7 @@ def modificar_Post(request, slug):
 def borrar_Post(request, slug):
     logger.debug('Hemos entrado en mi vista: borrar_Post')
     Post.objects.select_related().get(slug=slug).delete()
-    cache.delete(MEMCACHE_Post)
-    cache.delete(MEMCACHE_listPost)
+    
     return HttpResponseRedirect('/blog/')    
 
 @login_required( login_url='/accounts/login/')
@@ -175,9 +172,68 @@ def create_new_user(request):
     return direct_to_template(request, 'blog/user_create_form.html',
         {'form': form})
 
-
+@cache_page(60 * 1)
 def categoria_detalle(request, slug):
     categoria = get_object_or_404(Categoria, slug=slug)
     return object_list(request, queryset=categoria.posts_activos(), extra_context={
         'categoria': categoria
     })
+
+@cache_page(60 * 1)    
+def lista_Post_Tag(request, tag, pagina):   
+    logger.debug('Hemos entrado en mi_vista: index_Posts por Tag')
+    cat=Categoria.objects.all()                                              
+    t2= Tag.objects.all()
+    tam= t2.count()
+    logger.debug('Tamanyo: '+ str(tam))    
+    tags= dict([(t.etiqueta,int(tam/t.post_tag_set.all().count()) ) for t in t2])   
+       
+    logger.debug(' Nube Tags: '+str(tags))      
+    pagina= int(pagina)
+    inicio=  5*(pagina-1)    
+    fin=   (5*pagina) 
+    t3= t2.get(etiqueta=tag)    
+    cantidad= t3.post_tag_set.all().count()               
+    logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
+    Posts = t3.post_tag_set.all().order_by('-creado')[inicio:fin]        
+    logger.debug(Posts)    
+              
+    atras=pagina-1 if inicio>1 else pagina
+    sig=pagina+1 if fin<cantidad else pagina    
+        
+    return direct_to_template(request, 'blog/indextag.html',
+                              {'Posts': Posts,
+                               'atras': atras,
+                               'sig':sig,
+                               'pag':pagina,
+                               'cat':cat,
+                               'tags':tags})    
+
+def lista_Post_Categoria(request, catg, pagina):   
+    logger.debug('Hemos entrado en mi_vista: index_Posts por Categoria')
+    cat=Categoria.objects.all()                                              
+    t2= Tag.objects.all()
+    tam= t2.count()
+    logger.debug('Tamanyo: '+ str(tam))    
+    tags= dict([(t.etiqueta,int(tam/t.post_tag_set.all().count()) ) for t in t2])   
+       
+    logger.debug(' Nube Tags: '+str(tags))      
+    pagina= int(pagina)
+    inicio=  5*(pagina-1)    
+    fin=   (5*pagina) 
+    c3= cat.get(nombre=catg)    
+    cantidad= c3.post_set.all().count()               
+    logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
+    Posts = c3.post_set.all().order_by('-creado')[inicio:fin]        
+    logger.debug(Posts)    
+              
+    atras=pagina-1 if inicio>1 else pagina
+    sig=pagina+1 if fin<cantidad else pagina    
+        
+    return direct_to_template(request, 'blog/indexcat.html',
+                              {'Posts': Posts,
+                               'atras': atras,
+                               'sig':sig,
+                               'pag':pagina,
+                               'cat':cat,
+                               'tags':tags})    

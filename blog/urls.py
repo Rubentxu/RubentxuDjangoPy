@@ -11,4 +11,6 @@ urlpatterns = patterns('blog.views',
     (r'^post/crearpost/$', crear_Post),
     (r'^post/modifpost/(?P<slug>[-\w]+)/$',modificar_Post),
     (r'^post/borrarpost/(?P<slug>[-\w]+)/$',borrar_Post),
+    (r'^tag/(?P<tag>[\w]+)/pagina/(?P<pagina>\d{0,3})/$',lista_Post_Tag),
+    (r'^cat/(?P<catg>[\w]+)/pagina/(?P<pagina>\d{0,3})/$',lista_Post_Categoria),
 )
