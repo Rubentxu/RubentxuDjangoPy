@@ -17,9 +17,9 @@
   	<h2 class="postheader">{{ post.titulo|safe }}</h2>
   	<p class="chronodata">Publicado: {{ post.creado|date:"F j, Y" }} ||
   	<span>Categoria: {{ post.categoria.nombre }} || <b>  {{ comment_count }} comentarios.</b></span></p>
-  	{% if post.post_tag_set.all %} Etiquetas: {% endif %}
-  	{% for tag in post.post_tag_set.all %}
-    {{ tag.tag.etiqueta }}{%if tag%} |{% endif%}
+  	{% if post.tags %} Etiquetas: {% endif %}
+  	{% for tag in post.tags %}
+    {{ tag }} |
     {% endfor %}
     
   	

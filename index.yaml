@@ -54,9 +54,27 @@ indexes:
   - name: creado
     direction: desc
 
+- kind: blog_post
+  properties:
+  - name: estado
+  - name: tags
+  - name: creado
+
 - kind: blog_post_tag
   properties:
   - name: __key__
+    direction: desc
+
+- kind: blog_post_tag
+  properties:
+  - name: tag_id
+  - name: creado
+    direction: desc
+
+- kind: blog_post_tag
+  properties:
+  - name: tag_id
+  - name: post_creado
     direction: desc
 
 - kind: blog_tag

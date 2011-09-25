@@ -2,6 +2,18 @@
 {%block cuerpo %}
 
 <h3>Lista de Posts Activos</h3>
+ {% if user.is_authenticated %}<p>
+    	<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="{% url blog.views.crear_Post %}">Crear Post</a> </span>
+		
+		<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="{% url django.contrib.auth.views.logout %}">Salir</a> </span>
+		</p>		
+		<div class="cleared"></div>  
+ 
+{%endif%}
 <table class="lista">
 	
 	<tr>
@@ -13,7 +25,11 @@
 	</tr>
 	{% for post in Posts.object_list  %}
 	<tr>								  
-		<td class="relevante"><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a></td>
+		<td class="relevante"><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a>
+			<div class="sig"> <a href="{% url blog.views.modificar_Post post.slug %}"><img src="/media/images/modificar.jpeg"/> </a>
+				<a href="{% url blog.views.borrar_Post  post.slug %}"><img src="/media/images/borrar.jpeg"/> </a>
+			</div>
+		</td>
 		<td>{{ post.autor.username }}</td>		
 		<td>{{ post.get_estado_display }}</td>			
 		<td>{{ post.categoria.nombre }}</td>

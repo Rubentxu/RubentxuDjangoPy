@@ -12,7 +12,7 @@
 	text-decoration:none;
 }
 .markItUp  {
-	width:450px;
+	width:555px;
 	margin:5px 0 5px 0;
 	border:5px solid #F5F5F5;	
 }
@@ -26,8 +26,8 @@
 	font:12px 'Courier New', Courier, monospace;
 	padding:5px 5px 5px 35px;
 	border:3px solid #3C769D;
-	width:390px;
-	height:320px;
+	width:495px;
+	height:420px;
 	background:#FFF url(images/bg-editor-markdown.png) no-repeat;
 	clear:both;
 	line-height:18px;

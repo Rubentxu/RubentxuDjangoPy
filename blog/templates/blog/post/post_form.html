@@ -18,20 +18,28 @@ $(document).ready(function()	{
 {% endblock %}
  
 {%block cuerpo %}
+{% if user.is_authenticated %}<p>
+    	<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="{% url blog.views.crear_Post %}">Crear Post</a> </span>		
+		<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="{% url blog.views.lista_Posts %}">Listar Posts</a> </span>
+		<span class="button-wrapper"> <span class="l">
+    	</span> <span class="r"> </span> <a class="button"
+		href="{% url django.contrib.auth.views.logout %}">Salir</a> </span>
+		</p>
+		<div class="cleared"></div>  
+ 
+{%endif%}
 <form action="." method="post">
-	<table>{{form.as_table}} {{tform.as_table}} {% csrf_token %}
+	<table>{{form.as_p}}  {% csrf_token %}
 	</table>
 	<input type="submit" value="Guardar">
 </form>
 {% endblock %} 
 {%block titBarraLat%}Posts{%endblock%}
-{%block contBarraLat%}
-{% if user.is_authenticated %}
-  <p><a href="{% url blog.views.crear_Post %}">Crear Post</a></p>
-  <p><a href="{% url blog.views.lista_Posts %}">Listar Posts</a></p>  
- 
-{%endif%}
-{% endblock %}
+
  
 
 

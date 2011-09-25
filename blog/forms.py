@@ -1,21 +1,14 @@
-from django import forms  
-from django.forms.models import inlineformset_factory
-from blog.models import *
-import logging
+from django import forms 
+from blog.models import   Categoria ,Post
 
-logger = logging.getLogger(__name__)
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model= Categoria
+        
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ['autor']       
         
-    
-        
-class TagForm(forms.ModelForm):
-    class Meta:
-        model = Tag    
-        
-class Post_TagForm(forms.ModelForm):
-    class Meta:
-        model= Post_Tag
-                
+

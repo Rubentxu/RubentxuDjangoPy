@@ -60,18 +60,11 @@
 						<span class="r"></span><span class="t">Acerca de..</span></a>
 						</li>
 						</li>						
-						 {%endblock%} 
-						{% if user.is_authenticated %}
-						<li class="estado">
-						<a href="{% url django.contrib.auth.views.logout %}" class="active"> 
-						<span class="l"></span><span class="r"></span><span class="t">Hola, {{ user.username }} :Salir</span>
-						</a>
-						</li> {% else %}
+						 {%endblock%} 						
 						<li class="estado"> 
 						<a href="{% url blog.views.lista_Posts %}"><span
-								class="l"></span><span class="r"></span><span class="t">Entrar
-									Sistema</span></a>
-						</li> {% endif %}
+								class="l"></span><span class="r"></span><span class="t">Admin</span></a>
+						</li> 
 					</ul>
 				</div>
 				<div class="content-layout">
@@ -99,91 +92,7 @@
 						</div>							
 								
 										{% block content %}
-						<div class="post">
-								<div class="post-tl"></div>
-								<div class="post-tr"></div>
-								<div class="post-bl"></div>
-								<div class="post-br"></div>
-								<div class="post-tc"></div>
-								<div class="post-bc"></div>
-								<div class="post-cl"></div>
-								<div class="post-cr"></div>
-								<div class="post-cc"></div>
-								<div class="post-body">
-									<div class="post-inner article"> 
-										<h2 class="postheader">{% block contentitulo %}Welcome{% endblock %}</h2>
-										<div class="postcontent">
-											<!-- article-content -->
-											
-
-											<p>
-												Lorem ipsum dolor sit amet, <a href="#" title="link">link</a>,
-												<a class="visited" href="#" title="visited link">visited
-													link</a>, <a class="hover" href="#" title="hovered link">hovered
-													link</a> consectetuer adipiscing elit. Quisque sed felis.
-												Aliquam sit amet felis. Mauris semper, velit semper laoreet
-												dictum, quam diam dictum urna, nec placerat elit nisl in
-												quam. Etiam augue pede, molestie eget, rhoncus at, convallis
-												ut, eros.
-											</p>
-											<p>
-												<span class="button-wrapper"> <span class="l">
-												</span> <span class="r"> </span> <a class="button"
-													href="javascript:void(0)">Read more...</a> </span>
-											</p>
-											<div class="cleared"></div>
-											<div class="content-layout overview-table">
-												<div class="content-layout-row">
-													<div class="layout-cell">
-														<div class="overview-table-inner">
-															<h4>Support</h4>
-															<img src="images/01.png" width="55px" height="55px"
-																alt="an image" class="image" />
-															<p>Lorem ipsum dolor sit amet, consectetuer
-																adipiscing elit. Quisque sed felis. Aliquam sit amet
-																felis. Mauris semper, velit semper laoreet dictum, quam
-																diam dictum urna.</p>
-														</div>
-													</div>
-													<!-- end cell -->
-													<div class="layout-cell">
-														<div class="overview-table-inner">
-															<h4>Development</h4>
-															<img src="images/02.png" width="55px" height="55px"
-																alt="an image" class="image" />
-															<p>Lorem ipsum dolor sit amet, consectetuer
-																adipiscing elit. Quisque sed felis. Aliquam sit amet
-																felis. Mauris semper, velit semper laoreet dictum, quam
-																diam dictum urna.</p>
-														</div>
-													</div>
-													<!-- end cell -->
-													<div class="layout-cell">
-														<div class="overview-table-inner">
-															<h4>Strategy</h4>
-
-															<img src="images/03.png" width="55px" height="55px"
-																alt="an image" class="image" />
-															<p>Lorem ipsum dolor sit amet, consectetuer
-																adipiscing elit. Quisque sed felis. Aliquam sit amet
-																felis. Mauris semper, velit semper laoreet dictum, quam
-																diam dictum urna.</p>
-														</div>
-													</div>
-													<!-- end cell -->
-												</div>
-												<!-- end row -->
-											</div>
-											<!-- end table -->
-											
-											<!-- /article-content -->
-										</div>
-									<div class="cleared"></div>
-									</div>
-
-									<div class="cleared"></div>
-								</div>
-							</div>
+						
 										{% endblock %}
 							
 							

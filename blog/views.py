@@ -14,6 +14,7 @@ from django.core.paginator import Paginator , EmptyPage, PageNotAnInteger
 from django.utils.datetime_safe import datetime
 from django.db.models import Count
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 logger = logging.getLogger(__name__)
 
@@ -25,20 +26,17 @@ def mark(request):
 @cache_page(60 * 1)
 def index_Posts(request, pagina):
     logger.debug('Hemos entrado en mi_vista: index_Posts')
-    cat=Categoria.objects.all()                                              
-    tag= Tag.objects.all()
-    tam= tag.count()
-    logger.debug('Tamanyo: '+ str(tam))    
-    tags= dict([(t.etiqueta,int(tam/t.post_tag_set.all().count()) ) for t in tag])   
-       
-    logger.debug(' Nube Tags: '+str(tags))      
+    
+    Cat= Categoria.objects.all()   
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
     fin=   (5*pagina)   
     cantidad= Post.activo.all().count()                 
     logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
-    Posts = Post.activo.all().order_by('-creado')[inicio:fin]        
-    logger.debug(Posts)       
+    Posts = Post.activo.all().order_by('-creado')[inicio:fin]
+    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))    
+        
+    logger.debug(cloud)       
               
     atras=pagina-1 if inicio>1 else pagina
     sig=pagina+1 if fin<cantidad else pagina    
@@ -48,14 +46,14 @@ def index_Posts(request, pagina):
                                'atras': atras,
                                'sig':sig,
                                'pag':pagina,
-                               'cat':cat,
-                               'tags':tags})
+                               'cat':Cat,
+                               'tags':cloud})
 
 @login_required( login_url='/accounts/login/')
 @staff_member_required
 def lista_Posts(request):
     logger.debug('Hemos entrado en mi_vista: lista_Posts')           
-            
+    Cat= Categoria.objects.all()           
     Posts = Post.objects.all().order_by('-creado')       
     logger.debug(Posts)        
     paginator= Paginator (Posts,5)
@@ -70,91 +68,74 @@ def lista_Posts(request):
     except EmptyPage:
         Posts= paginator.page(paginator.num_pages)       
     return direct_to_template(request, 'blog/post/lista_posts.html',
-                              {'Posts': Posts})
+                              {'Posts': Posts, 'cat':Cat})
     
 @login_required( login_url='/accounts/login/')
 @staff_member_required
 def crear_Post(request):
     logger.debug('Hemos entrado en mi_vista: crear_Post')   
     pformset= PostForm
-    tformset= formset_factory( TagForm, extra=4,can_delete=False)
-    
+        
     if request.method == 'POST':
-        formset= pformset(request.POST,request.FILES,prefix='post')
-        tagformset= tformset(request.POST, request.FILES,prefix='tag')
+        formset= pformset(request.POST,request.FILES,prefix='post')        
         logger.debug('Formulario Crear Valido...')
         if formset.is_valid() :                               
                           
             post=formset.save(commit=False)
             post.autor= request.user                            
             post.save() 
-            logger.debug('Post: '+ str(post.id))             
-            for tag in tagformset:                
-                t=tag.save(commit=False)                
-                if not (t.etiqueta is None or t.etiqueta==''):                    
-                    try:
-                        t= Tag.objects.get(etiqueta=t.etiqueta)                                  
-                    except Tag.DoesNotExist:
-                        t.save()                                                              
-                    logger.debug(' Tag id: '+str(t.id))
-                    Post_Tag.objects.create(post=post,tag=t)                                                                        
-                
-            cantidad= Post.activo.all().count()/5                  
+            logger.debug('Post: '+ str(post.id))           
+            cache.clear()                  
             return HttpResponseRedirect('/blog/')
     else:
         formset= pformset(prefix='post')
-        tagformset = tformset(prefix='tag')
+        
     return direct_to_template(request, 'blog/post/post_form.html',
         {'form': formset,
-         'tform': tagformset})
+         })
  
 
 def ver_Post(request, slug):
-    logger.debug('Hemos entrado en mi_vista: ver_Post')      
+    logger.debug('Hemos entrado en mi_vista: ver_Post')
+    Cat= Categoria.objects.all()
+    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))        
     P= Post.objects.get(slug=slug)    
     return direct_to_template(request,'blog/post/ver_post.html', 
-                              {'Post' : P  })
+                              {'Post' : P,
+                               'cat':Cat,
+                               'tags':cloud})
     
 @login_required( login_url='/accounts/login/')    
 @staff_member_required    
 def modificar_Post(request, slug):
     logger.debug('Hemos entrado en mi_vista: modificar_Post')
-    inlineForm= inlineformset_factory(Post, Tag, extra=2,can_delete=False)
+    pformset= PostForm    
+    cat=Categoria.objects.all()            
+    p= Post.objects.all().get(slug=slug)            
     
-    p= Post.objects.select_related().get(slug=slug)            
-        
     if request.method == 'POST':
-        formset= PostForm(request.POST,instance=p)
-        tagformset= inlineForm(request.POST, request.FILES, instance=p)
+        formset= pformset(request.POST,instance=p,prefix='post')       
         
-        if formset.is_valid() and tagformset.is_valid():
+        if formset.is_valid() :
             logger.debug('Formulario Modificar Valido...')                   
                           
             post=formset.save(commit=False)
             post.autor= request.user                            
-            post.save() 
-                         
-            for tag in tagformset:
-                t=tag.save(commit=False)
-                if not (t.etiqueta is None or t.etiqueta==''):
-                    t.post= post               
-                    t.save(True, True)          
-              
+            post.save()            
+            cache.clear()  
             return HttpResponseRedirect('/blog/')
     else:
-        formset= PostForm(instance=p)
-        tagformset = inlineForm(instance=p)
-         
+        formset= pformset(instance=p,prefix='post')        
+                 
     return direct_to_template(request, 'blog/post/post_form.html',
-        {'form': formset,
-         'tform': tagformset})
+        {'form': formset, 'cat':cat })
     
 @login_required( login_url='/accounts/login/')
 @staff_member_required      
 def borrar_Post(request, slug):
     logger.debug('Hemos entrado en mi vista: borrar_Post')
-    Post.objects.select_related().get(slug=slug).delete()
-    
+    Post.objects.all().get(slug=slug).delete()
+    cache.clear()
     return HttpResponseRedirect('/blog/')    
 
 @login_required( login_url='/accounts/login/')
@@ -182,42 +163,24 @@ def categoria_detalle(request, slug):
 @cache_page(60 * 1)    
 def lista_Post_Tag(request, tag, pagina):   
     logger.debug('Hemos entrado en mi_vista: index_Posts por Tag')
-    cat=Categoria.objects.all()                                              
-    t2= Tag.objects.all()
-    tam= t2.count()
-    logger.debug('Tamanyo: '+ str(tam))    
-    tags= dict([(t.etiqueta,int(tam/t.post_tag_set.all().count()) ) for t in t2])   
-       
-    logger.debug(' Nube Tags: '+str(tags))      
+    Posts=Post.activo.filter(tags=tag)
+    cat=Categoria.objects.all()
+    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+    
+    logger.debug(Posts.values())
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
-    fin=   (5*pagina) 
-    t3= t2.get(etiqueta=tag)    
-    cantidad= t3.post_tag_set.all().count()               
-    logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
-    Posts = t3.post_tag_set.all().order_by('-creado')[inicio:fin]        
-    logger.debug(Posts)    
-              
-    atras=pagina-1 if inicio>1 else pagina
-    sig=pagina+1 if fin<cantidad else pagina    
+    fin=   (5*pagina)               
+    atras=pagina-1 if inicio>1 else pagina   
         
     return direct_to_template(request, 'blog/indextag.html',
-                              {'Posts': Posts,
-                               'atras': atras,
-                               'sig':sig,
-                               'pag':pagina,
-                               'cat':cat,
-                               'tags':tags})    
+                              {'Posts': Posts,'atras': atras,'pag':pagina,'cat':cat,'tags':cloud})    
 
 def lista_Post_Categoria(request, catg, pagina):   
     logger.debug('Hemos entrado en mi_vista: index_Posts por Categoria')
-    cat=Categoria.objects.all()                                              
-    t2= Tag.objects.all()
-    tam= t2.count()
-    logger.debug('Tamanyo: '+ str(tam))    
-    tags= dict([(t.etiqueta,int(tam/t.post_tag_set.all().count()) ) for t in t2])   
-       
-    logger.debug(' Nube Tags: '+str(tags))      
+    cat=Categoria.objects.all() 
+    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+     
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
     fin=   (5*pagina) 
@@ -236,4 +199,4 @@ def lista_Post_Categoria(request, catg, pagina):
                                'sig':sig,
                                'pag':pagina,
                                'cat':cat,
-                               'tags':tags})    
+                               'tags':cloud})    

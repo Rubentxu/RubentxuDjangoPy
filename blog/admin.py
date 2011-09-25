@@ -1,7 +1,11 @@
 from django.contrib import admin
-from blog.models import *
+from blog.models import Post , Categoria
 
-admin.site.register(Post)
-admin.site.register(Tag)
+def tags(instance):
+    return ', '.join(instance.tags)
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['titulo','categoria', tags]
+
+admin.site.register(Post, PostAdmin)
 admin.site.register(Categoria)
-admin.site.register(Post_Tag)

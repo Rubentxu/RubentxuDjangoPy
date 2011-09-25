@@ -14,24 +14,24 @@
 		<div class="post-inner article">
   	
   	{% get_comment_count for pt as comment_count %}
-  	<h2 class="postheader">{{ pt.post.titulo|safe }}</h2>
-  	<p class="chronodata">Publicado: {{ pt.post.creado|date:"F j, Y" }} ||
-  	<span>Categoria: {{ pt.post.categoria.nombre }} || <b>  {{ comment_count }} comentarios.</b></span></p>
-  	
-  	
-    {{ pt.tag.etiqueta }}
-    
+  	<h2 class="postheader">{{ pt.titulo|safe }}</h2>
+  	<p class="chronodata">Publicado: {{ pt.creado|date:"F j, Y" }} ||
+  	<span>Categoria: {{ pt.categoria.nombre }} || <b>  {{ comment_count }} comentarios.</b></span></p>
+  	{% if pt.tags %} Etiquetas: {% endif %}
+  	{% for tag in pt.tags %}
+    	{{ tag }} |
+    {% endfor %}
   	
   	
 
 	
-    <p>{{ pt.post.autor.username }} escribio:</p>   
-    <div class="postcontent"><p>{{ pt.post.contenido_html|truncatewords_html:"100"|safe }}</p>
+    <p>{{ pt.autor.username }} escribio:</p>   
+    <div class="postcontent"><p>{{ pt.contenido_html|truncatewords_html:"100"|safe }}</p>
     
     	<p>
     	<span class="button-wrapper"> <span class="l">
     	</span> <span class="r"> </span> <a class="button"
-		href="{{ pt.post.get_absolute_url }}">Ver Mas..</a> </span>
+		href="{{ pt.get_absolute_url }}">Ver Mas..</a> </span>
 		</p>
 		<div class="cleared"></div>
 		
