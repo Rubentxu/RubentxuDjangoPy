@@ -1,21 +1,6 @@
 {% extends 'base.html' %}
 {% block content %} 
   {% load comments %}
-  {% include "blog/post/include_postcat.html"   %}
-  	<div class='paginacion'>
-  		{% if pag != atras%}
-  		<a  class="atras" href="{% url blog.views.lista_Post_Categoria atras %}"><img src="/media/images/fizq.jpg"/></a>
-  		{% endif%}
-  		{% if pag != sig%}  	
-  		<a class="sig" href="{% url blog.views.lista_Post_Categoria sig %}"><img src="/media/images/fder.jpeg"/></a>
-  		{% endif%}
-  	</div>
+  {% include "blog/post/include_postcat.html"   %}  	
   
 {% endblock %}
-{%block contBarraLat%}
-{% if user.is_authenticated %}
-  <p><a href="{% url blog.views.crear_Post %}">Crear Post</a></p>
-  <p><a href="{% url blog.views.lista_Posts %}">Listar Posts</a></p>  
- 
-{%endif%}
-{% endblock %} 

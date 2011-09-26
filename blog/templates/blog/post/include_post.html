@@ -45,3 +45,11 @@
 </div>
 </div>    
   {% endfor %}
+  <div class='paginacion'>
+  		{% if pag != atras%}
+  		<a  class="atras" href="{% url blog.views.index_Posts atras %}"><img src="/media/images/fizq.jpg"/></a>
+  		{% endif%}
+  		{% if pag != sig%}  	
+  		<a class="sig" href="{% url blog.views.index_Posts sig %}"><img src="/media/images/fder.jpeg"/></a>
+  		{% endif%}
+  	</div>

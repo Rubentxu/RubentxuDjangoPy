@@ -39,9 +39,7 @@
 	{% get_comment_list for Post as comment_list %}
     <div id="comment_box">
     
-    {% for comment in comment_list %}
-    
-    
+    {% for comment in comment_list %}   
     
         <div class='autor'>En {{ comment.submit_date|date:"F j, Y" }}: {{ comment.name }} dijo:</div>
     	<div class="contenido ">

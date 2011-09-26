@@ -34,9 +34,13 @@ def index_Posts(request, pagina):
     cantidad= Post.activo.all().count()                 
     logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
     Posts = Post.activo.all().order_by('-creado')[inicio:fin]
-    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))    
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)
+        logger.debug(cloud)   
         
-    logger.debug(cloud)       
+           
               
     atras=pagina-1 if inicio>1 else pagina
     sig=pagina+1 if fin<cantidad else pagina    
@@ -54,8 +58,11 @@ def index_Posts(request, pagina):
 def lista_Posts(request):
     logger.debug('Hemos entrado en mi_vista: lista_Posts')           
     Cat= Categoria.objects.all()           
-    Posts = Post.objects.all().order_by('-creado')       
-    logger.debug(Posts)        
+    Posts = Post.objects.all().order_by('-creado')
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)            
     paginator= Paginator (Posts,5)
     page= request.GET.get('page')
     
@@ -68,14 +75,17 @@ def lista_Posts(request):
     except EmptyPage:
         Posts= paginator.page(paginator.num_pages)       
     return direct_to_template(request, 'blog/post/lista_posts.html',
-                              {'Posts': Posts, 'cat':Cat})
+                              {'Posts': Posts, 'cat':Cat, 'tags':cloud})
     
 @login_required( login_url='/accounts/login/')
 @staff_member_required
 def crear_Post(request):
     logger.debug('Hemos entrado en mi_vista: crear_Post')   
     pformset= PostForm
-        
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)
     if request.method == 'POST':
         formset= pformset(request.POST,request.FILES,prefix='post')        
         logger.debug('Formulario Crear Valido...')
@@ -91,14 +101,16 @@ def crear_Post(request):
         formset= pformset(prefix='post')
         
     return direct_to_template(request, 'blog/post/post_form.html',
-        {'form': formset,
-         })
+        {'form': formset ,'tags':cloud})
  
 
 def ver_Post(request, slug):
     logger.debug('Hemos entrado en mi_vista: ver_Post')
     Cat= Categoria.objects.all()
-    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))        
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)       
     P= Post.objects.get(slug=slug)    
     return direct_to_template(request,'blog/post/ver_post.html', 
                               {'Post' : P,
@@ -112,7 +124,10 @@ def modificar_Post(request, slug):
     pformset= PostForm    
     cat=Categoria.objects.all()            
     p= Post.objects.all().get(slug=slug)            
-    
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)
     if request.method == 'POST':
         formset= pformset(request.POST,instance=p,prefix='post')       
         
@@ -128,7 +143,7 @@ def modificar_Post(request, slug):
         formset= pformset(instance=p,prefix='post')        
                  
     return direct_to_template(request, 'blog/post/post_form.html',
-        {'form': formset, 'cat':cat })
+        {'form': formset, 'cat':cat ,'tags':cloud})
     
 @login_required( login_url='/accounts/login/')
 @staff_member_required      
@@ -138,7 +153,7 @@ def borrar_Post(request, slug):
     cache.clear()
     return HttpResponseRedirect('/blog/')    
 
-@login_required( login_url='/accounts/login/')
+
 def create_new_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -165,22 +180,30 @@ def lista_Post_Tag(request, tag, pagina):
     logger.debug('Hemos entrado en mi_vista: index_Posts por Tag')
     Posts=Post.activo.filter(tags=tag)
     cat=Categoria.objects.all()
-    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
-    
-    logger.debug(Posts.values())
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)
+        logger.debug(cloud)
+    cantidad= Post.activo.filter(tags=tag).count()
+    logger.debug('Cantidad: '+str(cantidad))
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
     fin=   (5*pagina)               
     atras=pagina-1 if inicio>1 else pagina   
+    sig=pagina+1 if fin<cantidad else pagina
         
     return direct_to_template(request, 'blog/indextag.html',
-                              {'Posts': Posts,'atras': atras,'pag':pagina,'cat':cat,'tags':cloud})    
-
+                              {'Posts': Posts,'atras': atras,'sig':sig,'pag':pagina,'cat':cat,'tags':cloud,'tagpag':tag})    
+@cache_page(60 * 1)
 def lista_Post_Categoria(request, catg, pagina):   
     logger.debug('Hemos entrado en mi_vista: index_Posts por Categoria')
-    cat=Categoria.objects.all() 
-    cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
-     
+    cat=Categoria.objects.all()
+    cloud= cache.get('nubetags')
+    if cloud is None: 
+        cloud = Post.activo.tagCloud(list(Post.activo.values_list('tags')))
+        cache.set('nubetags', cloud)
+        logger.debug(cloud)
     pagina= int(pagina)
     inicio=  5*(pagina-1)    
     fin=   (5*pagina) 
@@ -188,7 +211,7 @@ def lista_Post_Categoria(request, catg, pagina):
     cantidad= c3.post_set.all().count()               
     logger.debug('Inicio: '+ str(inicio)+ ' Fin: '+ str(fin)+' Pagina: '+ str(pagina)+'Cantidad : '+ str(cantidad))
     Posts = c3.post_set.all().order_by('-creado')[inicio:fin]        
-    logger.debug(Posts)    
+       
               
     atras=pagina-1 if inicio>1 else pagina
     sig=pagina+1 if fin<cantidad else pagina    
@@ -199,4 +222,5 @@ def lista_Post_Categoria(request, catg, pagina):
                                'sig':sig,
                                'pag':pagina,
                                'cat':cat,
-                               'tags':cloud})    
+                               'tags':cloud,
+                               'catpag':catg})    
