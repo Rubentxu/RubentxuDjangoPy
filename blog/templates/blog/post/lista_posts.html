@@ -26,8 +26,8 @@
 	{% for post in Posts.object_list  %}
 	<tr>								  
 		<td class="relevante"><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a>
-			<div class="sig"> <a href="{% url blog.views.modificar_Post post.slug %}"><img src="/media/images/modificar.jpeg"/> </a>
-				<a href="{% url blog.views.borrar_Post  post.slug %}"><img src="/media/images/borrar.jpeg"/> </a>
+			<div class="sig"> <a href="{% url blog.views.modificar_Post post.slug %}"><img src="/media/css/img/modificar.jpeg"/> </a>
+				<a href="{% url blog.views.borrar_Post  post.slug %}"><img src="/media/css/img/borrar.jpeg"/> </a>
 			</div>
 		</td>
 		<td>{{ post.autor.username }}</td>		

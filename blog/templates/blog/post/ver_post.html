@@ -1,17 +1,14 @@
 {% extends 'blog/post/base_post.html' %} 
 {%block cuerpo %}
 	{% load comments %}
-	{% load markup %}
+	{% load markup %}	
 	
-	
-	<h3>{{ Post.nombre }}</h3>
-	<p>Autor: {{Post.autor.username }}
-	<h3>Titulo: {{Post.titulo}}</h3>
+	<h1>{{ Post.nombre }}</h1>
+	<p class="autor">Autor: {{Post.autor.username }}</p>
+	<h1>Titulo: {{Post.titulo}}</h1>
 	<div>
 		{{ Post.contenido_html|safe }} 
 	</div>
-	
-	
 	
     <h2>Deja un Comentario</h2>
     {% get_comment_form for Post as form %}

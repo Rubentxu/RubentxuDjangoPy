@@ -1,0 +1,26 @@
+header{
+    visibility: hidden;
+}
+body {
+      
+    background-image:  url("img/page_g.png")  ;
+    background-repeat:  repeat-y;
+    background-position:top  center;
+    background-color: #8F9C96;
+}
+aside{   
+    position: absolute;
+    top:  8em;
+    left:   51.2em;    
+    font-family: "SMASH PUNKERS";
+    color: white;
+}
+nav{
+    background-image: url("img/header.jpg");
+    background-position:top center;  
+    width: 890px;
+    
+}
+.button{
+    background-color: brown;
+}

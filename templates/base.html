@@ -1,220 +1,174 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="es-ES"
-	xml:lang="es">
-<head>
-<meta name="google-site-verification"
-	content="9roxQCpEGIYvIycCn3b0YkAI-yBSJppa17Q9b2o0x6g" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>{% block title %}Blog Rubentxu--- {% endblock %}</title>
-{% block jquerys %}<!-- CODIGO EXTRA -->{% endblock %}
-<link rel="stylesheet" href="/media/estilo.css" type="text/css"
-	media="screen" />
-<script src="http://www.google.com/jsapi" type="text/javascript"></script>
-<script type="text/javascript"> 
-  google.load('search', '1', {language : 'es', style : google.loader.themes.SHINY});
-  google.setOnLoadCallback(function() {
-    var customSearchControl = new google.search.CustomSearchControl('001885404607443963327:jx3aenvneqo');
-    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-    customSearchControl.draw('cse');
-  }, true);
-</script> 
-<!--[if IE 6]><link rel="stylesheet" href="../media/estilo.ie6.css" type="text/css" media="screen" /><![endif]-->
-<!--[if IE 7]><link rel="stylesheet" href="../media/estilo.ie7.css" type="text/css" media="screen" /><![endif]-->
-</head>
-<body>
-	<div id="page-background-simple-gradient">
-		<div id="page-background-gradient"></div>
-	</div>
-	<div id="page-background-glare">
-		<div id="page-background-glare-image"></div>
-	</div>
-	<div id="main">
-		<div class="sheet">
-			<div class="sheet-tl"></div>
-			<div class="sheet-tr"></div>
-			<div class="sheet-bl"></div>
-			<div class="sheet-br"></div>
-			<div class="sheet-tc"></div>
-			<div class="sheet-bc"></div>
-			<div class="sheet-cl"></div>
-			<div class="sheet-cr"></div>
-			<div class="sheet-cc"></div>
-			<div class="sheet-body">
-				<div class="header">
-					<div class="header-png"></div>
-					<div class="header-jpeg"></div>
-					<div class="logo">
-						<h1 id="name-text" class="logo-name">
-							<a href="#">Blog</a>
-						</h1>
-						<div id="slogan-text" class="logo-text">Rubentxu</div>
-					</div>
-				</div>
-				<div class="nav">
-					<ul class="menu">						
-						{%block menu%}
-						<li><a href="/" class="active"><span class="l"></span><span
-								class="r"></span><span class="t"> Inicio</span> </a>
-						</li>						
-						<li><a href="/acercade" class="active"><span class="l"></span>
-						<span class="r"></span><span class="t">Acerca de..</span></a>
-						</li>
-						</li>						
-						 {%endblock%} 						
-						<li class="estado"> 
-						<a href="{% url blog.views.lista_Posts %}"><span
-								class="l"></span><span class="r"></span><span class="t">Admin</span></a>
-						</li> 
-					</ul>
-				</div>
-				<div class="content-layout">
-					<div class="content-layout-row">
-						<div class="layout-cell content">
-						
-						
-						<div class="post">
-								<div class="post-tl"></div>
-								<div class="post-tr"></div>
-								<div class="post-bl"></div>
-								<div class="post-br"></div>
-								<div class="post-tc"></div>
-								<div class="post-bc"></div>
-								<div class="post-cl"></div>
-								<div class="post-cr"></div>
-								<div class="post-cc"></div>
-								<div class="post-body">
-									<div class="post-inner article"> 										
-										<div class="postcontent">										
-										<div id="cse" style="width: 100%;">Cargando..</div>
-										</div>
-									</div>	
-								</div>
-						</div>							
-								
-										{% block content %}
-						
-										{% endblock %}
-							
-							
-							
-						</div>
-						<div class="layout-cell sidebar1">
+<!DOCTYPE html>
+<html class="no-js" lang="es">
+    <head>
+        <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+        <!--[if IE 7]>    <link rel="stylesheet" href="css/estilo.ie7.css" type="text/css" media="screen" /> <![endif]-->
+        <!--[if IE 8]>    <link rel="stylesheet" href="css/estilo.ie8.css" type="text/css" media="screen" /> <![endif]-->        
+        <!--[if gt IE 8]><!--><!--<![endif]-->
 
-							<div class="block">
-								<div class="block-body">
-									<div class="blockheader">
-										<div class="l"></div>
-										<div class="r"></div>
-										<div class="t">{%block titBarraLat%}Blog{%endblock%}</div>
-									</div>
-									<div class="blockcontent">
-										<div class="blockcontent-tl"></div>
-										<div class="blockcontent-tr"></div>
-										<div class="blockcontent-bl"></div>
-										<div class="blockcontent-br"></div>
-										<div class="blockcontent-tc"></div>
-										<div class="blockcontent-bc"></div>
-										<div class="blockcontent-cl"></div>
-										<div class="blockcontent-cr"></div>
-										<div class="blockcontent-cc"></div>
-										<div class="blockcontent-body">										
-										
-										{%block contBarraLat%} {%endblock %}
-										
-										<p><a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" 
-										class="rss-tag-icon2" title="RSS Posts">Feeds Posts</a></p>
-										<div class="cat">
-										<h2>Categorias</h2></p>
-										{% for c in cat%}
-											<a href="{% url blog.views.lista_Post_Categoria  c.nombre '1' %}" >{{ c.nombre }} |</a>											
-										{% endfor %}
-										
-										</div>
-										<div class="tag">
-										<h2>Nube de Tags</h2></p>
-										<div class="tag-cloud">
-									
-										{% for e, s in tags.items %}
-										<a href="{% url blog.views.lista_Post_Tag  e  '1' %}" class="size-{{ s }}">{{ e }} |</a> 											    											
-										{% endfor %}
-										</div>
-    
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}Blog Rubentxu--- {% endblock %}</title>
 
-										
-										</div>										
-											
-											<!-- /block-content -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1">        
+        <link rel="stylesheet" href="/media/css/style.css">        
+        <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+        <script type="text/javascript"> 
+            google.load('search', '1', {language : 'es', style : google.loader.themes.SHINY});
+            google.setOnLoadCallback(function() {
+                var customSearchControl = new google.search.CustomSearchControl('001885404607443963327:jx3aenvneqo');
+                customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+                customSearchControl.draw('cse');
+            }, true);
+        </script> 
+    </head>
+    <body>
+        <div id="contenedor"  role="main">
 
-											<div class="cleared"></div>
-										</div>
-									</div>
-									<div class="cleared"></div>
-								</div>
-							</div>
-							
-							<br/>
-							
-							<div class="block">
-								<div class="block-body">
-									<div class="blockheader">
-										<div class="l"></div>
-										<div class="r"></div>
-										<div class="t">Calendario</div>
-									</div>
-									<div class="blockcontent">
-										<div class="blockcontent-tl"></div>
-										<div class="blockcontent-tr"></div>
-										<div class="blockcontent-bl"></div>
-										<div class="blockcontent-br"></div>
-										<div class="blockcontent-tc"></div>
-										<div class="blockcontent-bc"></div>
-										<div class="blockcontent-cl"></div>
-										<div class="blockcontent-cr"></div>
-										<div class="blockcontent-cc"></div>
-										<div class="blockcontent-body">										
-									
-										<div class="calendario">	
-										<script src="http://www.gmodules.com/ig/ifr?url=http://www.google.com/ig/modules/calendar3.xml&amp;up_calendarFeeds=&amp;up_calendarColors=&amp;up_firstDay=1&amp;up_dateFormat=1&amp;up_timeFormat=1%3A00pm&amp;up_showDatepicker=1&amp;up_hideAgenda=1&amp;up_showEmptyDays=0&amp;up_showExpiredEvents=1&amp;synd=open&amp;w=200&amp;h=400&amp;title=__Blog_Calendar__&amp;lang=es&amp;country=ALL&amp;border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;output=js"></script>
-										</div>	
-																			
-											
-											<!-- /block-content -->
+            <nav>
+                <a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" class="rss-tag-icon" title="RSS"></a>
+                <ul>
+                    <li><a href="/" > Inicio</a></li>                  
+                    <li><a href="/acercade" ">Acerca de..</a></li>
+                    <li> <br>
+                    </li>
+                    <li><a href="{% url blog.views.lista_Posts %}">Admin</a></li>
 
-											<div class="cleared"></div>
-										</div>
-									</div>
-									<div class="cleared"></div>
-								</div>
-							</div>
-							
+                </ul>
+            </nav>
+
+            <section checked="true">
+
+                <div id="cse" style="width: 100%;">Cargando..</div>                    
+                {% block content %}
 
 
-						</div>
-					</div>
-				</div>
-				<div class="cleared"></div>
-				<div class="footer">
-					<div class="footer-t"></div>
-					<div class="footer-l"></div>
-					<div class="footer-b"></div>
-					<div class="footer-r"></div>
-					<div class="footer-body">
-						<a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" class="rss-tag-icon" title="RSS"></a>
-						<div class="footer-text">
-							<p>
-								<a href="#">Programado en Python y Django</a> | | <a href="#">Creado por Rubentxu</a><br />
-								LICENCIA AGPL ---. <a href="https://github.com/Rubentxu/RubentxuDjangoPy">Codigo del Blog en Github</a>
-							</p>
-						</div>
-						<div class="cleared"></div>
-					</div>
-				</div>
-				<div class="cleared"></div>
-			</div>
-		</div>
-		<div class="cleared"></div>
-		<p class="page-footer">Blog-Rubentxu creado por Rubentxu.</p>
-	</div>
+                <article>
+                    <h1>Bendless Love</h1>
+                    <p>Dear God, they'll be killed on our doorstep! And there's no
+                        trash pickup until January 3rd. Leela, Bender, we're going
+                        grave robbing. I guess because my parents keep telling me to
+                        be more ladylike. As though!</p>
+                    <h2>Insane in the Mainframe</h2>
+                    <p>For example, if you killed your grandfather, you'd cease to
+                        exist! Why would a robot need to drink? I love you, buddy!
+                        I'm just glad my fat, ugly mama isn't alive to see this day.
+                        We're also Santa Claus!</p>
+                    <ul>
+                        <li>Check it out, y'all. Everyone who was invited is here.</li>
+                        <li>The alien mothership is in orbit here. If we can hit
+                            that bullseye, the rest of the dominoes will fall like a
+                            house of cards. Checkmate.</li>
+                        <li>Why would a robot need to drink?</li>
+                        <li>You guys aren't Santa! You're not even robots. How dare
+                            you lie in front of Jesus?</li>
+                    </ul>
+                    <h3>The Series Has Landed</h3>
+                    <p>As an interesting side note, as a head without a body, I
+                        envy the dead. You guys go on without me! I'm going to go…
+                        look for more stuff to steal! What kind of a father would I
+                        be if I said no?</p>
+                    <h4>The Cyber House Rules</h4>
+                    <p>Good man. Nixon's pro-war and pro-family. I just told you!
+                        You've killed me! I videotape every customer that comes in
+                        here, so that I may blackmail them later. Spare me your
+                        space age technobabble, Attila the Hun! But I've never been
+                        to the moon!</p>
+                    <ol>
+                        <li>Ok, we'll go deliver this crate like professionals, and
+                            then we'll go ride the bumper cars.</li>
+                        <li>She also liked to shut up!</li>
+                        <li>You guys go on without me! I'm going to go… look for
+                            more stuff to steal!</li>
+                    </ol>
+                    <h5>That's Lobstertainment</h5>
+                    <p>Leela's gonna kill me. Hello, little man. I will destroy
+                        you! Fatal. Bender! Ship! Stop bickering or I'm going to
+                        come back there and change your opinions manually! I decline
+                        the title of Iron Cook and accept the lesser title of Zinc
+                        Saucier, which I just made up. Uhh… also, comes with double
+                        prize money. Ah, the 'Breakfast Club' soundtrack! I can't
+                        wait til I'm old enough to feel ways about stuff!</p>
+                    <a class="button" href="">Leer Mas..</a>
+                </article>
+                <article>
+                    <h1>Bendless Love</h1>
+                    <p>Dear God, they'll be killed on our doorstep! And there's no
+                        trash pickup until January 3rd. Leela, Bender, we're going
+                        grave robbing. I guess because my parents keep telling me to
+                        be more ladylike. As though!</p>
+                    <h2>Insane in the Mainframe</h2>
+                    <p>For example, if you killed your grandfather, you'd cease to
+                        exist! Why would a robot need to drink? I love you, buddy!
+                        I'm just glad my fat, ugly mama isn't alive to see this day.
+                        We're also Santa Claus!</p>
 
-</body>
+                    <h3>The Series Has Landed</h3>
+                    <p>As an interesting side note, as a head without a body, I
+                        envy the dead. You guys go on without me! I'm going to go…
+                        look for more stuff to steal! What kind of a father would I
+                        be if I said no?</p>
+                    <h4>The Cyber House Rules</h4>
+                    <p>Good man. Nixon's pro-war and pro-family. I just told you!
+                        You've killed me! I videotape every customer that comes in
+                        here, so that I may blackmail them later. Spare me your
+                        space age technobabble, Attila the Hun! But I've never been
+                        to the moon!</p>
+                    <ol>
+                        <li>Ok, we'll go deliver this crate like professionals, and
+                            then we'll go ride the bumper cars.</li>
+                        <li>She also liked to shut up!</li>
+                        <li>You guys go on without me! I'm going to go… look for
+                            more stuff to steal!</li>
+                    </ol>
+
+                    <a class="button" href="">Leer Mas..</a>
+
+
+                </article>
+                {% endblock %}
+            </section>
+            <header checked="true">
+                <h1 checked="true" class="Titulo">&#34;Blog Rubentxu&#44;</h1>
+            </header>
+            <aside >
+                <div class="blat">
+                    <h3>Categorias</h3>
+                    {% for c in cat%}
+                    <a href="{% url blog.views.lista_Post_Categoria  c.nombre '1' %}" >{{ c.nombre }} |</a>											
+                    {% endfor %}
+                </div>
+
+                <div class="blat">
+                    <h3>Tags</h3>
+                    {% for e, s in tags.items %}
+                    <a href="{% url blog.views.lista_Post_Tag  e  '1' %}" class="size-{{ s }}">{{ e }} |</a> 											    											
+                    {% endfor %}
+                </div>
+            </aside>
+            <footer> 
+                <a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" class="rss-tag-icon" title="RSS"></a>
+                <div class="footer-text">
+                    <p>
+                        <a href="#">Programado en Python con Django, Html5 y Css3 servidor AppEngine Google.</a> <br />
+                        <a href="https://github.com/Rubentxu/RubentxuDjangoPy">LICENCIA AGPL | Codigo del Blog en Github.</a>
+                    </p>                   
+                    <a href="#">Blog-Rubentxu creado por Rubentxu.</a>
+                </div>
+            </footer>
+        </div>
+
+        <!-- JavaScript at the bottom for fast page loading --><!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+        
+        {% block jquerys %}
+        	<!-- CODIGO EXTRA -->        
+        {% endblock %}
+        <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+              chromium.org/developers/how-tos/chrome-frame-getting-started -->
+        <!--[if lt IE 7 ]><script defer src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>    <script defer>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>  <![endif]-->
+    </body>
 </html>
