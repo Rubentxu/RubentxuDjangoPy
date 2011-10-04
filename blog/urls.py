@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from blog.models import *
 from blog.views import *
 
+
 urlpatterns = patterns('blog.views',    
     (r'^(?P<slug>[-\w]+)/$', categoria_detalle, {}, 'categoria_detalle'),    
     (r'^$', index_Posts, { 'pagina':1}),
@@ -13,4 +14,6 @@ urlpatterns = patterns('blog.views',
     (r'^post/borrarpost/(?P<slug>[-\w]+)/$',borrar_Post),
     (r'^tag/(?P<tag>[\w]+)/pagina/(?P<pagina>\d{0,3})/$',lista_Post_Tag),
     (r'^cat/(?P<catg>[\w]+)/pagina/(?P<pagina>\d{0,3})/$',lista_Post_Categoria),
+    
+
 )

@@ -15,16 +15,9 @@
         <meta name="author" content="">
         <!-- Mobile viewport optimized: j.mp/bplateviewport -->
         <meta name="viewport" content="width=device-width,initial-scale=1">        
-        <link rel="stylesheet" href="/media/css/style.css">        
-        <script src="http://www.google.com/jsapi" type="text/javascript"></script>
-        <script type="text/javascript"> 
-            google.load('search', '1', {language : 'es', style : google.loader.themes.SHINY});
-            google.setOnLoadCallback(function() {
-                var customSearchControl = new google.search.CustomSearchControl('001885404607443963327:jx3aenvneqo');
-                customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-                customSearchControl.draw('cse');
-            }, true);
-        </script> 
+        <link rel="stylesheet" href="/media/css/style.css">
+        {% block buscador %}      
+        {% endblock %} 
     </head>
     <body>
         <div id="contenedor"  role="main">
@@ -33,7 +26,8 @@
                 <a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" class="rss-tag-icon" title="RSS"></a>
                 <ul>
                     <li><a href="/" > Inicio</a></li>                  
-                    <li><a href="/acercade" ">Acerca de..</a></li>
+                    <li><a href="/acercade/" >Acerca de</a></li>
+                    <li><a href="/buscar/" >Buscar</a></li>
                     <li> <br>
                     </li>
                     <li><a href="{% url blog.views.lista_Posts %}">Admin</a></li>
@@ -41,12 +35,8 @@
                 </ul>
             </nav>
 
-            <section checked="true">
-
-                <div id="cse" style="width: 100%;">Cargando..</div>                    
+            <section checked="true">                                    
                 {% block content %}
-
-
                 <article>
                     <h1>Bendless Love</h1>
                     <p>Dear God, they'll be killed on our doorstep! And there's no
@@ -133,8 +123,9 @@
                 {% endblock %}
             </section>
             <header checked="true">
-                <h1 checked="true" class="Titulo">&#34;Blog Rubentxu&#44;</h1>
+                <h1 checked="true" class="Titulo"> </h1>
             </header>
+            {% block aside %}
             <aside >
                 <div class="blat">
                     <h3>Categorias</h3>
@@ -150,6 +141,7 @@
                     {% endfor %}
                 </div>
             </aside>
+            {%endblock%}
             <footer> 
                 <a href="{% url django.contrib.syndication.views.feed 'ultimos' %}" class="rss-tag-icon" title="RSS"></a>
                 <div class="footer-text">

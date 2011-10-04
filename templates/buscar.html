@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block buscador %}        
+        <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+        <script type="text/javascript"> 
+            google.load('search', '1', {language : 'es', style : google.loader.themes.SHINY});
+            google.setOnLoadCallback(function() {
+                var customSearchControl = new google.search.CustomSearchControl('001885404607443963327:jx3aenvneqo');
+                customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+                customSearchControl.draw('cse');
+            }, true);
+        </script>
+{% endblock %}
+{% block content %}
+<article><h1>Busquedas en el Blog.</h1>
+<div id="cse" style="width: 100%;">Cargando...</div>
+</article>
+	
+{% endblock %}
+{% block aside%}
+{% endblock %}																		

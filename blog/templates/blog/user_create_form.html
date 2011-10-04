@@ -1,30 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="post">
-	<div class="post-tl"></div>
-	<div class="post-tr"></div>
-	<div class="post-bl"></div>
-	<div class="post-br"></div>
-	<div class="post-tc"></div>
-	<div class="post-bc"></div>
-	<div class="post-cl"></div>
-	<div class="post-cr"></div>
-	<div class="post-cc"></div>
-	<div class="post-body">
-		<div class="post-inner article">
+<article>
 
   <form action="." method="post">
     <table>
+    {% csrf_token %}
     {{form.as_table}}
     </table>
+    <input type="hidden" name="next" value="{{ next }}" />    
     <input type="submit" value="submit">
   </form>
-  
-  
-  <div class="cleared"></div>
-</div>
-
-<div class="cleared"></div>
-</div>
-</div>    
+ </article> 
+ 
 {% endblock %}

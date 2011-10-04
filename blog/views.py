@@ -153,7 +153,8 @@ def borrar_Post(request, slug):
     cache.clear()
     return HttpResponseRedirect('/blog/')    
 
-
+@login_required( login_url='/accounts/login/')
+@staff_member_required      
 def create_new_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

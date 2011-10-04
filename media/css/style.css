@@ -8,22 +8,44 @@ audio,canvas,video {
 }
 
 audio
+
+
+
+
 :not
+
+
  
+
+
 (
 [
 controls
 ]
+
+
  
+
+
 )
 {
 display
+
+
+
+
 :
+
+
  
+
+
 none
+
+
+
+
 ;
-
-
 }
 [hidden] {
 	display: none;
@@ -65,7 +87,7 @@ a {
 
 a:visited {
 	text-shadow: 3px 3px 1px #ded13e;
-	filter: dropshadow(color =   #ded13e, offx =   3, offy =   3);
+	filter: dropshadow(color =       #ded13e, offx =       3, offy =       3);
 }
 
 a:hover {
@@ -233,20 +255,42 @@ img {
 }
 
 svg
+
+
+
+
 :not
+
+
  
+
+
 (
 :root
+
+
  
+
+
 )
 {
 overflow
+
+
+
+
 :
+
+
  
+
+
 hidden
+
+
+
+
 ;
-
-
 }
 figure {
 	margin-top: 0pt;
@@ -554,7 +598,6 @@ header {
 	padding-bottom: 1.5em;
 	padding-left: 1em;
 	font-size: 3.5em;
-	font-family: "SMASH PUNKERS";
 }
 
 #contenedor {
@@ -579,7 +622,7 @@ nav {
 		rgba(252, 101, 1, 1) 53%, rgba(191, 110, 78, 1) 87% );
 	background: -ms-linear-gradient(top, rgba(240, 183, 161, 1) 14%,
 		rgba(252, 101, 1, 1) 53%, rgba(191, 110, 78, 1) 87% );
-	filter: progid:DXImageTransform.Microsoft.gradient(   startColorstr='#f0b7a1',
+	filter: progid:DXImageTransform.Microsoft.gradient(     startColorstr='#f0b7a1',
 		endColorstr='#bf6e4e', GradientType=0 );
 	background: linear-gradient(top, rgba(240, 183, 161, 1) 14%,
 		rgba(252, 101, 1, 1) 53%, rgba(191, 110, 78, 1) 87% );
@@ -659,7 +702,7 @@ nav ul li {
 	background: -ms-linear-gradient(top, rgba(240, 183, 161, 1) 0%,
 		rgba(140, 51, 16, 1) 50%, rgba(117, 34, 1, 1) 51%,
 		rgba(191, 110, 78, 1) 100% ); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient(   startColorstr='#f0b7a1',
+	filter: progid:DXImageTransform.Microsoft.gradient(     startColorstr='#f0b7a1',
 		endColorstr='#bf6e4e', GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, rgba(240, 183, 161, 1) 0%,
 		rgba(140, 51, 16, 1) 50%, rgba(117, 34, 1, 1) 51%,
@@ -721,7 +764,7 @@ nav li a:hover {
 h1,h2,h3,h4 {
 	color: #742C01;
 	text-shadow: 5px 5px 5px #5A695F;
-	filter: dropshadow(color =   #5A695F, offx =   5, offy =   5);
+	filter: dropshadow(color =       #5A695F, offx =       5, offy =       5);
 }
 
 h1 {
@@ -754,7 +797,7 @@ footer {
 		rgba(252, 101, 1, 1) 53%, rgba(191, 110, 78, 1) 87% );
 	background: -ms-linear-gradient(top, rgba(240, 183, 161, 1) 14%,
 		rgba(252, 101, 1, 1) 53%, rgba(191, 110, 78, 1) 87% );
-	filter: progid:DXImageTransform.Microsoft.gradient(   startColorstr='#f0b7a1',
+	filter: progid:DXImageTransform.Microsoft.gradient(     startColorstr='#f0b7a1',
 		endColorstr='#bf6e4e', GradientType=0 );
 	background: linear-gradient(top, rgba(240, 183, 161, 1) 14%,
 		rgba(252, 101, 1, 1) 53%, rgba(191, 110, 78, 1) 87% );
@@ -824,7 +867,7 @@ footer,footer p,footer a,footer a:link,footer a:visited,footer a:hover {
 footer a,footer a:link {
 	text-decoration: none;
 	text-shadow: 1.5px 1.5px 1px #ffffff;
-	filter: dropshadow(color =   #ffffff, offx =   1.5, offy =   1.5)
+	filter: dropshadow(color =       #ffffff, offx =       1.5, offy =       1.5)
 }
 
 footer a:hover {
@@ -834,19 +877,6 @@ footer a:hover {
 footer a:visited {
 	text-decoration: none;
 	text-shadow: 1.5px 1.5px 1px #ffffff;
-}
-
-@font-face {
-	font-family: 'SMASHPUNKERSRegular';
-	src: url('font/smash_punkers1-webfont.eot');
-	src: url('font/smash_punkers1-webfont.eot?#iefix')
-		format('embedded-opentype'), url('font/smash_punkers1-webfont.woff')
-		format('woff'), url('font/smash_punkers1-webfont.ttf')
-		format('truetype'),
-		url('font/smash_punkers1-webfont.svg#SMASHPUNKERSRegular')
-		format('svg');
-	font-weight: normal;
-	font-style: normal;
 }
 
 aside {
@@ -889,7 +919,6 @@ aside {
 aside h2,aside h3 {
 	color: white;
 	text-align: center;
-	font-family: "SMASH PUNKERS";
 }
 
 .button {
@@ -967,11 +996,31 @@ aside h2,aside h3 {
 }
 
 .atras {
+	width: 48px;
+	height: 30px;
 	float: left;
+	background: url("img/fizq.jpg") no-repeat;
+}
+
+.atras:hover {
+	opacity: 0.9;
+	-webkit-box-shadow: inset 3px 3px 3px 2px rgba(0, 0, 0, 1);
+	-moz-box-shadow: inset 3px 3px 3px 2px rgba(0, 0, 0, 1);
+	box-shadow: inset 3px 3px 3px 2px rgba(0, 0, 0, 1);
 }
 
 .sig {
+	width: 48px;
+	height: 30px;
 	float: right;
+	background: url("img/fder.jpeg") no-repeat;
+}
+
+.sig:hover {
+	opacity: 0.9;
+	-webkit-box-shadow: inset 3px 3px 3px 2px rgba(0, 0, 0, 1);
+	-moz-box-shadow: inset 3px 3px 3px 2px rgba(0, 0, 0, 1); 
+	box-shadow: inset 3px 3px 3px 2px rgba(0, 0, 0, 1);
 }
 
 .chronodata {
@@ -1026,7 +1075,7 @@ aside h2,aside h3 {
 	clear: left; /* fuerza a mostrarse debajo de cualquier caja flotante */
 	opacity: .70; /*CSS3*/
 	-moz-opacity: .70; /*Mozilla*/
-	filter: alpha(opacity =     80); /*IE*/
+	filter: alpha(opacity =         80); /*IE*/
 	border: double 4px #4356d1;
 	-moz-border-radius-topleft: 0px;
 	-moz-border-radius-topright: 75px;
@@ -1053,11 +1102,13 @@ aside h2,aside h3 {
 
 .autor {
 	color: #AF4F01;
-	
 }
 
 .relevante {
 	padding: 0.5em;
 	margin: 1em;
-	width: 230px;
+	width: 250px;
+}
+.flotader{
+	float: right;
 }

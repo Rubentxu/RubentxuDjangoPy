@@ -1,9 +1,7 @@
-header{
-    visibility: hidden;
-}
+
 body {
       
-    background-image:  url("img/page_g.png")  ;
+    background-image:  url("/img/page_g.png")  ;
     background-repeat:  repeat-y;
     background-position:top  center;
     background-color: #8F9C96;
@@ -11,8 +9,7 @@ body {
 aside{   
     position: absolute;
     top:  8em;
-    left:   51.2em;    
-    font-family: "SMASH PUNKERS";
+    left:   51.2em;   
     color: white;
 }
 nav{

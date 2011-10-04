@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import admin
 from blog.feeds import LatestEntriesFeed,CategoryFeed
 from blog.Sitemap import all_sitemaps as sitemaps
- 
+from django.views.generic import TemplateView
 
 admin.autodiscover()
 handler500 = 'djangotoolbox.errorviews.server_error'
@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     (r'^sitemap.xml$', 'django.contrib.sitemaps.views.index', {'sitemaps': sitemaps}),
     (r'^sitemap-(?P<section>.+)\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/images/favicon.ico'}),
-
+    (r'^acercade/', TemplateView.as_view(template_name="acerca.html")),   
+    (r'^buscar/', TemplateView.as_view(template_name="buscar.html")),
     
 )

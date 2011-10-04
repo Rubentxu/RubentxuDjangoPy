@@ -25,9 +25,9 @@
   {% endfor %}    
   	 <div class='paginacion'>
   	{% if pag != atras%}
-  		<a  class="atras" href="{% url blog.views.lista_Post_Tag tagpag atras %}"><img src="/media/css/img/fizq.jpg"/></a>
+  		<a  class="atras" href="{% url blog.views.lista_Post_Tag tagpag atras %}"></a>
   		{% endif%}
   		{% if pag != sig%}  	
-  		<a class="sig" href="{% url blog.views.lista_Post_Tag tagpag sig %}"><img src="/media/css/img/fder.jpeg"/></a>
+  		<a class="sig" href="{% url blog.views.lista_Post_Tag tagpag sig %}"></a>
   		{% endif%}
   </div>
