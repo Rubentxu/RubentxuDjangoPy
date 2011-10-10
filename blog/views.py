@@ -23,7 +23,7 @@ def mark(request):
     data= request.POST.get('data')    
     return HttpResponse(markdown(data)) 
 
-@cache_page(60 * 1)
+@cache_page(60 * 120)
 def index_Posts(request, pagina):
     logger.debug('Hemos entrado en mi_vista: index_Posts')
     
@@ -169,14 +169,14 @@ def create_new_user(request):
     return direct_to_template(request, 'blog/user_create_form.html',
         {'form': form})
 
-@cache_page(60 * 1)
+@cache_page(60 * 120)
 def categoria_detalle(request, slug):
     categoria = get_object_or_404(Categoria, slug=slug)
     return object_list(request, queryset=categoria.posts_activos(), extra_context={
         'categoria': categoria
     })
 
-@cache_page(60 * 1)    
+@cache_page(60 * 120)    
 def lista_Post_Tag(request, tag, pagina):   
     logger.debug('Hemos entrado en mi_vista: index_Posts por Tag')
     Posts=Post.activo.filter(tags=tag)
@@ -196,7 +196,7 @@ def lista_Post_Tag(request, tag, pagina):
         
     return direct_to_template(request, 'blog/indextag.html',
                               {'Posts': Posts,'atras': atras,'sig':sig,'pag':pagina,'cat':cat,'tags':cloud,'tagpag':tag})    
-@cache_page(60 * 1)
+@cache_page(60 * 120)
 def lista_Post_Categoria(request, catg, pagina):   
     logger.debug('Hemos entrado en mi_vista: index_Posts por Categoria')
     cat=Categoria.objects.all()
