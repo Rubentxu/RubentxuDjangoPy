@@ -8,16 +8,7 @@ audio,canvas,video {
 }
 
 audio
-
-
-
-
 :not
-
-
- 
-
-
 (
 [
 controls
@@ -556,6 +547,7 @@ td {
 }
 
 body {
+	background-image: url("img/page_g.png");
 	background-image: url("img/page_gl.png"), url("img/page_g.png"),
 		-moz-linear-gradient(rgb(117, 133, 126) 30.5em, rgb(56, 64, 60) );
 	background-image: url("img/page_gl.png"), url("img/page_g.png"),
@@ -670,13 +662,13 @@ section {
 }
 
 article {
-	margin: 1em 0em;
-	padding: 2em;
-	border-width: 29px 29px 26px 25px;
-	-moz-border-image: url(img/marco.jpg) 31 32 31 31 round;
-	-webkit-border-image: url(img/marco.jpg) 31 32 31 31 round;
-	-o-border-image: url(img/marco.jpg) 31 32 31 31 round;
-	border-image: url(img/marco.jpg) 31 32 31 31 round;
+	margin: 0.5em 0.1em 0.5em 0;
+	padding: 1em;
+	border-width: 12px 12px 12px 12px;
+	-moz-border-image: url(img/marco.png) 12 12 12 12 round;
+	-webkit-border-image: url(img/marco.jpg) 12 12 12 12 round;
+	-o-border-image: url(img/marco.jpg) 12 12 12 12 round;
+	border-image: url(img/marco.jpg) 12 12 12 12 round;
 }
 
 nav ul {
@@ -1111,4 +1103,23 @@ aside h2,aside h3 {
 }
 .flotader{
 	float: right;
+}
+
+pre {
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+	background: #f0f0f0;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	line-height: 20px; /*--Height of each line of code--*/
+	background: url(img/pre_code_bg.gif) repeat-y left top; /*--Background of lined paper--*/
+	width: 500px;
+	overflow: auto; /*--If the Code exceeds the width, a scrolling is available--*/
+	overflow-Y: hidden;  /*--Hides vertical scroll created by IE--*/
+}
+pre code {
+	margin: 0 0 0 40px;  /*--Left Margin--*/
+	padding: 18px 0;
+	display: block;
 }
